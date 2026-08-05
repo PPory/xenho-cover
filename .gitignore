@@ -1,0 +1,9 @@
+# 风格参考图：第三方设计师 / 杂志的原作，仅供开发期校准风格原子，不随仓库分发
+refs/
+
+# 系统与编辑器
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/
+.idea/
