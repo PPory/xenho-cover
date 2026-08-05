@@ -4,7 +4,7 @@ Claude Code skill：把文章 / 主题变成 Claude（Anthropic）官方风格�
 
 ## 目标
 
-- 输入一篇文章或一个主题，产出一份可直接贴到 **image-2** 的完整图像生成提示词
+- 输入一篇文章或一个主题，产出一份可直接贴到 **GPT Image-2** 的完整图像生成提示词
 - 风格库与工作流分离：加新风格只加 `styles/{id}/` 文件夹，不改 SKILL.md
 - 最终提示词必须是「编译融合」的产物，不是「封面指令 + 风格原文」两段拼接
 
@@ -44,4 +44,4 @@ New-Item -ItemType Junction -Path C:/Users/Lenovo/.claude/skills/xenho-cover -Ta
 
 ## 验证
 
-跑一遍端到端：拿一篇文章触发 skill → 应先问平台 → 选定后检查产出提示词：无 `{{占位符}}` 残留、无 STYLE.md 原文整段拼贴、标题层落在风格语言里。最终以 image-2 实际出图对照 `refs/` 校准。
+跑一遍端到端：拿一篇文章触发 skill → 应先问平台 → 选定后检查产出提示词：无 `{{占位符}}` 残留、无 STYLE.md 原文整段拼贴、标题层落在风格语言里。最终以 GPT Image-2 实际出图对照 `refs/` 校准。

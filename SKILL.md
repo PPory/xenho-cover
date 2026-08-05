@@ -1,6 +1,6 @@
 ---
 name: xenho-cover
-description: 把文章、小红书笔记、公众号推文、X 帖子或一个主题变成封面图像提示词，风格来自自建风格库（Anthropic Research 编辑风、Notion 手绘信息图等；纯提示词输出，用户自己贴到 image-2 出图）。触发词：「配个封面」「封面图」「封面提示词」「Claude 风格封面」「Notion 风格封面 / 信息图」「公众号头图」「小红书封面」。与 poster-design 的区别：那个是 Mondo 及传奇设计师风格海报且可直接出图，本 skill 用自建风格库且只产提示词；与 claude-design 的区别：那个产 HTML/CSS 设计稿，本 skill 产图像生成提示词。用户明确点名设计师风格海报或 HTML 设计稿时不要用本 skill。
+description: 把文章、小红书笔记、公众号推文、X 帖子或一个主题变成封面图像提示词，风格来自自建风格库（Anthropic Research 编辑风、Notion 手绘信息图等；纯提示词输出，用户自己贴到 GPT Image-2 出图）。触发词：「配个封面」「封面图」「封面提示词」「Claude 风格封面」「Notion 风格封面 / 信息图」「公众号头图」「小红书封面」。与 poster-design 的区别：那个是 Mondo 及传奇设计师风格海报且可直接出图，本 skill 用自建风格库且只产提示词；与 claude-design 的区别：那个产 HTML/CSS 设计稿，本 skill 产图像生成提示词。用户明确点名设计师风格海报或 HTML 设计稿时不要用本 skill。
 ---
 
 # xenho-cover
@@ -45,7 +45,7 @@ description: 把文章、小红书笔记、公众号推文、X 帖子或一个�
 
 1. 读 blueprint + 选定风格的 `META.md` 和 `STYLE.md`
 2. 按 blueprint 结构编译：填实所有占位符，把 `style_anchors`、`cover_shape_adaptation`、`must_preserve`、`avoid_when_applying_to_cover` 改写成本次封面的具体画法
-3. 目标出图工具是 **image-2**，提示词默认输出中文（已验证 image-2 对中文提示词和中文字形的还原良好）；用户明确要英文时才输出英文版
+3. 目标出图工具是 **GPT Image-2**，提示词默认输出中文（已验证 GPT Image-2 对中文提示词和中文字形的还原良好）；用户明确要英文时才输出英文版
 
 ### 4. 输出
 
