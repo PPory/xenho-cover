@@ -2,9 +2,9 @@
 
 一个给 AI Agent 使用的封面提示词生成 Skill。
 
-把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**可直接贴到即梦 / Midjourney / nano banana 的完整图像生成提示词**。风格来自自建风格库——13 个互不重叠的风格原子，从安静的研究报告到先锋剪贴海报，各自有明确的适用边界。
+把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**可直接贴到 image-2 的完整图像生成提示词**。风格来自自建风格库——13 个互不重叠的风格原子，从安静的研究报告到先锋剪贴海报，各自有明确的适用边界。
 
-本 Skill **只产提示词，不直接出图**。提示词是自包含的：填实了色值、构图、字体、文字白名单和终检标准，复制粘贴即可用。
+本 Skill **只产提示词，不直接出图**。提示词是自包含的：填实了色值、构图、字体、文字白名单和终检标准，复制粘贴到 image-2 即可用。README 里的全部示例图都由这些提示词在 image-2 上直接生成，未做任何后期修改。
 
 ## 安装
 
@@ -64,8 +64,10 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 
 ### 要英文提示词
 
+提示词默认输出中文（image-2 对中文提示词和中文字形的还原良好）。需要英文版时明说：
+
 ```
-用 film-poster-icon 风格配个封面，输出英文提示词，我要贴 Midjourney
+用 film-poster-icon 风格配个封面，输出英文提示词
 ```
 
 ## 风格库
@@ -88,32 +90,33 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 
 ## 风格示例
 
-全部由本 Skill 产出的提示词生成，比例为公众号头图 `2.35:1`。点击图片可看大图。
+全部由本 Skill 产出的提示词在 image-2 上直接生成，未做后期修改，比例为公众号头图 `2.35:1`。
+下方为缩略图，**点击可查看全尺寸原图**。
 
 <table>
 <tr>
-<td width="33%"><img src="example-image/anthropic-research-terracotta.png"><br><b>Anthropic Research · 陶土橙</b><br><code>anthropic-research</code></td>
-<td width="33%"><img src="example-image/anthropic-research-ink.png"><br><b>Anthropic Research · 深黑</b><br><code>anthropic-research</code></td>
-<td width="33%"><img src="example-image/T02-notion-doodle.png"><br><b>Notion 手绘信息图</b><br><code>notion-doodle</code></td>
+<td width="33%"><a href="example-image/anthropic-research-terracotta.png"><img src="example-image/thumbs/anthropic-research-terracotta.webp"></a><br><b>Anthropic Research · 陶土橙</b><br><code>anthropic-research</code></td>
+<td width="33%"><a href="example-image/anthropic-research-ink.png"><img src="example-image/thumbs/anthropic-research-ink.webp"></a><br><b>Anthropic Research · 深黑</b><br><code>anthropic-research</code></td>
+<td width="33%"><a href="example-image/T02-notion-doodle.png"><img src="example-image/thumbs/T02-notion-doodle.webp"></a><br><b>Notion 手绘信息图</b><br><code>notion-doodle</code></td>
 </tr>
 <tr>
-<td><img src="example-image/T03-polish-grain-collage.png"><br><b>波兰颗粒剪贴海报</b><br><code>polish-grain-collage</code></td>
-<td><img src="example-image/swiss-grid-scrawl.png"><br><b>瑞士网格手写对撞</b><br><code>swiss-grid-scrawl</code></td>
-<td><img src="example-image/T05-cyber-industrial-panel.png"><br><b>赛博工业面板</b><br><code>cyber-industrial-panel</code></td>
+<td><a href="example-image/T03-polish-grain-collage.png"><img src="example-image/thumbs/T03-polish-grain-collage.webp"></a><br><b>波兰颗粒剪贴海报</b><br><code>polish-grain-collage</code></td>
+<td><a href="example-image/swiss-grid-scrawl.png"><img src="example-image/thumbs/swiss-grid-scrawl.webp"></a><br><b>瑞士网格手写对撞</b><br><code>swiss-grid-scrawl</code></td>
+<td><a href="example-image/T05-cyber-industrial-panel.png"><img src="example-image/thumbs/T05-cyber-industrial-panel.webp"></a><br><b>赛博工业面板</b><br><code>cyber-industrial-panel</code></td>
 </tr>
 <tr>
-<td><img src="example-image/T06-business-magazine-front-page.png"><br><b>商业杂志头版</b><br><code>business-magazine-front-page</code></td>
-<td><img src="example-image/T07-bw-type-specimen.png"><br><b>黑白字体样张</b><br><code>bw-type-specimen</code></td>
-<td><img src="example-image/T08-torn-photo-collage.png"><br><b>撕纸摄影拼贴</b><br><code>torn-photo-collage</code></td>
+<td><a href="example-image/T06-business-magazine-front-page.png"><img src="example-image/thumbs/T06-business-magazine-front-page.webp"></a><br><b>商业杂志头版</b><br><code>business-magazine-front-page</code></td>
+<td><a href="example-image/T07-bw-type-specimen.png"><img src="example-image/thumbs/T07-bw-type-specimen.webp"></a><br><b>黑白字体样张</b><br><code>bw-type-specimen</code></td>
+<td><a href="example-image/T08-torn-photo-collage.png"><img src="example-image/thumbs/T08-torn-photo-collage.webp"></a><br><b>撕纸摄影拼贴</b><br><code>torn-photo-collage</code></td>
 </tr>
 <tr>
-<td><img src="example-image/T09-dirty-typewriter-specimen.png"><br><b>脏打字机样张</b><br><code>dirty-typewriter-specimen</code></td>
-<td><img src="example-image/retro-halftone-pop.png"><br><b>复古半调波普</b><br><code>retro-halftone-pop</code></td>
-<td><img src="example-image/highlight-archive-type.png"><br><b>荧光档案打字机</b><br><code>highlight-archive-type</code></td>
+<td><a href="example-image/T09-dirty-typewriter-specimen.png"><img src="example-image/thumbs/T09-dirty-typewriter-specimen.webp"></a><br><b>脏打字机样张</b><br><code>dirty-typewriter-specimen</code></td>
+<td><a href="example-image/retro-halftone-pop.png"><img src="example-image/thumbs/retro-halftone-pop.webp"></a><br><b>复古半调波普</b><br><code>retro-halftone-pop</code></td>
+<td><a href="example-image/highlight-archive-type.png"><img src="example-image/thumbs/highlight-archive-type.webp"></a><br><b>荧光档案打字机</b><br><code>highlight-archive-type</code></td>
 </tr>
 <tr>
-<td><img src="example-image/cinematic-photo-editorial.png"><br><b>电影感摄影排版</b><br><code>cinematic-photo-editorial</code></td>
-<td><img src="example-image/film-poster-icon.png"><br><b>概念物电影海报</b><br><code>film-poster-icon</code></td>
+<td><a href="example-image/cinematic-photo-editorial.png"><img src="example-image/thumbs/cinematic-photo-editorial.webp"></a><br><b>电影感摄影排版</b><br><code>cinematic-photo-editorial</code></td>
+<td><a href="example-image/film-poster-icon.png"><img src="example-image/thumbs/film-poster-icon.webp"></a><br><b>概念物电影海报</b><br><code>film-poster-icon</code></td>
 <td></td>
 </tr>
 </table>
@@ -129,7 +132,8 @@ xenho-cover/
 ├── styles/{style-id}/
 │   ├── META.md                 # 结构化锚点（色板、构图适配、必守项、禁用项）
 │   └── STYLE.md                # 视觉语言的完整描述
-└── example-image/              # 各风格的实际产出示例
+└── example-image/              # 各风格的实际产出示例（image-2 直出）
+    └── thumbs/                 # README 网格用的 WebP 缩略图，勿手改
 ```
 
 设计上风格库与工作流分离：**加新风格只需要加一个 `styles/{id}/` 文件夹，不用改 `SKILL.md`**。
