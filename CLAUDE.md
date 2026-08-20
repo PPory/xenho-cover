@@ -18,7 +18,7 @@ Claude Code skill：把文章 / 主题变成 Claude（Anthropic）官方风格�
 本项目通过 junction 安装为 Claude Code skill：
 
 ```powershell
-New-Item -ItemType Junction -Path C:/Users/Lenovo/.claude/skills/xenho-cover -Target "D:/desktop桌面/01--Areas/02--代码开发/04--vibecoding/xenho-cover"
+New-Item -ItemType Junction -Path $HOME/.claude/skills/xenho-cover -Target "<本仓库克隆路径>"
 ```
 
 安装后在任意会话说「给这篇文章配个封面」即可触发。
@@ -33,7 +33,7 @@ New-Item -ItemType Junction -Path C:/Users/Lenovo/.claude/skills/xenho-cover -Ta
 - `references/`：提示词结构模板（blueprint）和风格目录（catalog）
 - `styles/{style-id}/`：风格原子，每个风格两个文件——`META.md`（结构化锚点）+ `STYLE.md`（视觉语言描述）
 - `refs/{style-id}/`：风格参考图，按风格分子目录存放，开发期校准风格原子用，运行时不加载
-- 生成的提示词存档在 `C:/Users/Lenovo/.claude/data/xenho-cover/`（skill 目录外，升级不丢）
+- 生成的提示词存档在用户 home 目录下的 `.claude/data/xenho-cover/`（skill 目录外，升级不丢）
 
 ## 加新风格的流程
 
