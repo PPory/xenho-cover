@@ -15,7 +15,7 @@
 | 黑白字体样张 | `bw-type-specimen` | 宣言、金句文、概念提出、文字出版元话题；巨型衬线字 + 黑白正负空间 + 跨区反色的纯排版海报。 |
 | 撕纸摄影拼贴 | `torn-photo-collage` | 情绪浓度高的叙事文、个人经历、城市街头与亚文化、反精致观点；黑白纪实摄影撕裂重拼 + 深红压场。 |
 | 脏打字机样张 | `dirty-typewriter-specimen` | 宣言、态度文、复古粗粝的暗色标题主导封面；炭黑粗纸 + 磨损邮戳巨字 + 高对比黑白物件照片 + 规格标签行。 |
-| 复古半调波普 | `retro-halftone-pop` | 第一人称态度文、情绪话题、亚文化漫画感；动画线稿 + CMYK 粗网点 + 高饱和撞色；主体形态自由——人物特写、物件特写、场景局部或 2–3 个元素的组合都行，不强制人像。 |
+| 复古半调波普 | `retro-halftone-pop` | 第一人称态度文、情绪话题、亚文化漫画感；动画线稿 + CMYK 粗网点 + 高饱和撞色；主体形态自由——人物特写、物件特写、场景局部或 2–3 个元素的组合都行，不强制人像、不强制单一。 |
 | 荧光档案打字机 | `highlight-archive-type` | 轻快干货、观点表态、文书档案感话题；纸底 + 打字机字 + 荧光绿「划重点」高亮条 + 半调物件；库内最轻快的风格。 |
 | 电影感摄影排版 | `cinematic-photo-editorial` | 氛围叙事、场景体验、大片感内容；满幅单色调电影摄影 + 巨型紧缩标题长在景深里 + 编辑标签与虚构徽章。 |
 | 概念物电影海报 | `film-poster-icon` | 单一强意象的概念提出、命名、时代情绪、文学与艺术话题；「人在结构面前很小」这类母题；饱和实色底 + 巨型概念物剪影 + 微小人影的尺度对比 + 电影海报三段式层级。 |
@@ -42,6 +42,8 @@
 
 - 公众号（2.35:1）：`anthropic-research` 横版左字右图；`notion-doodle` 按内容选构图型；`polish-grain-collage` 字符沿横向对角散落；`swiss-grid-scrawl` 印刷品偏左、手迹右侧延展；`cyber-industrial-panel` 面板横向咬合；`business-magazine-front-page` 原生横版头版式分区；`bw-type-specimen` 弧线纵切左右两区；`torn-photo-collage` 照片横铺、红色块靠一端；`dirty-typewriter-specimen` 左字右图 60/40 咬合；`retro-halftone-pop` 人物特写右置、标题左下；`highlight-archive-type` 横版纸页、标题居左；`cinematic-photo-editorial` 原生宽银幕满幅；`film-poster-icon` 概念物移到右三分之一并向上出血、标题与 credits 竖向堆叠在左
 - X（5:2）：`anthropic-research` 非对称排布；`notion-doodle` 场景型或流程型横排；`polish-grain-collage` 横向对角散落；`cyber-industrial-panel` 面板横向咬合；`business-magazine-front-page` 通栏大标题头版；`bw-type-specimen` 巨字横向错落；`cinematic-photo-editorial` 宽银幕满幅；`dirty-typewriter-specimen` 左字右图
+- 视频号（3:4）：同小红书的竖版做法
+- YouTube（16:9）：同公众号的横版做法，左右留白比公众号多一些
 - 小红书（3:4）：`polish-grain-collage` 原生竖版海报（冲击力强）；`swiss-grid-scrawl` 原生竖版（设计感强）；`cyber-industrial-panel` 竖版面板堆叠（原生 9:16）；`business-magazine-front-page` 杂志封面式纵向层级；`bw-type-specimen` 原生竖版巨字；`torn-photo-collage` 竖版纵向撕拼；`retro-halftone-pop` 竖版人物特写（情绪冲击强）；`cinematic-photo-editorial` 竖版大片；`film-poster-icon` 原生竖版海报（概念物顶天立地 + 竖排标题，海报感最强）；`highlight-archive-type` 竖版纸页；`dirty-typewriter-specimen` 竖版字号阶梯堆叠；`notion-doodle` 竖版信息图；`anthropic-research` 竖版标题主导（偏安静）
 
 ## 风格确认规则

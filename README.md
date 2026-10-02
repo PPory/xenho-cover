@@ -1,10 +1,13 @@
 # xenho-cover
 
-一个给 AI Agent 使用的封面提示词生成 Skill。
+一个给 AI Agent 使用的封面生成 Skill。
 
-把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**可直接贴到 GPT Image-2 的完整图像生成提示词**。风格来自自建风格库——13 个互不重叠的风格原子，从安静的研究报告到先锋剪贴海报，各自有明确的适用边界。
+把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**完整的图像生成提示词**，也可以直接出图。风格来自自建风格库——13 个互不重叠的风格原子，从安静的研究报告到先锋剪贴海报，各自有明确的适用边界。
 
-本 Skill **只产提示词，不直接出图**。提示词是自包含的：填实了色值、构图、字体、文字白名单和终检标准，复制粘贴到 GPT Image-2 即可用。README 里的全部示例图都由这些提示词直接生成，未做任何后期修改。
+两种模式：
+
+- **Prompt 模式**：只产提示词。提示词是自包含的：填实了色值、构图、字体、文字白名单和终检标准，复制粘贴到 GPT Image 系列即可用。README 里的全部示例图都由这些提示词经 GPT Image-2 直接生成，未做任何后期修改。
+- **Direct 模式**：编译同一份提示词后经 OpenAI 兼容代理（[CLIProxyAPI](https://github.com/router-for-me/CLIProxyAPI)）直接出一张图，默认模型 `gemini-3.1-flash-image`。`scripts/cover_generate.py` 内置防重复出图：一次请求最多发一次，没拿到输出也不会自动重发。配置见 [`references/direct-mode.md`](references/direct-mode.md)。
 
 ## 安装
 
@@ -60,11 +63,11 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 小红书封面，polish-grain-collage 风格，主题：专注是一种反抗
 ```
 
-平台与比例映射：小红书 `3:4`、公众号 `2.35:1`、X `5:2`，也可以直接给自定义比例。**没给平台也没给比例时，Skill 会先停下来问**——比例错了整张图作废。
+平台与比例映射：小红书 `3:4`、公众号 `2.35:1`、X `5:2`、视频号 `3:4`、YouTube `16:9`，也可以直接给自定义比例。**没给平台也没给比例时，Skill 会先停下来问**——比例错了整张图作废。
 
 ### 要英文提示词
 
-提示词默认输出中文（GPT Image-2 对中文提示词和中文字形的还原良好）。需要英文版时明说：
+提示词默认输出中文（GPT Image 系列和 gemini-3.1-flash-image 对中文提示词和中文字形的还原都良好）。需要英文版时明说：
 
 ```
 用 film-poster-icon 风格配个封面，输出英文提示词
@@ -125,10 +128,13 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 
 ```
 xenho-cover/
-├── SKILL.md                    # skill 入口：工作流 + 门控 + Gotchas
+├── SKILL.md                    # skill 入口：模式判定 + 工作流 + 门控 + Gotchas
 ├── references/
 │   ├── cover-prompt-blueprint.md   # 最终提示词的结构（封面形状）
-│   └── style-catalog.md            # 风格菜单、内容匹配、平台推荐
+│   ├── style-catalog.md            # 风格菜单、内容匹配、平台推荐
+│   └── direct-mode.md              # Direct 模式：配置、端点、比例、防重复
+├── scripts/cover_generate.py   # Direct 模式唯一的出图入口（标准库）
+├── tests/test_cover_generate.py    # 离线测试：本机假代理，不花额度
 ├── styles/{style-id}/
 │   ├── META.md                 # 结构化锚点（色板、构图适配、必守项、禁用项）
 │   └── STYLE.md                # 视觉语言的完整描述
