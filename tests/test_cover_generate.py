@@ -66,7 +66,7 @@ with tempfile.TemporaryDirectory() as tmp:
     code, out = run(tmp)
     assert code == 0 and out["ok"] and not out["reused"], out
     assert len(calls) == 1 and calls[0]["path"] == "/v1/chat/completions", calls
-    assert calls[0]["body"]["image_config"] == {"aspect_ratio": "3:4", "image_size": "2K"}, calls[0]
+    assert calls[0]["body"]["image_config"] == {"aspect_ratio": "3:4"}, calls[0]
     assert calls[0]["ua"].startswith("xenho-cover/"), calls[0]
     assert Path(out["image_path"]).read_bytes() == PNG
 

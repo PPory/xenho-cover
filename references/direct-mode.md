@@ -48,7 +48,7 @@ Direct 模式必须先按 Prompt 模式完整编译出最终提示词，再调�
 
 - **`gpt-image-*` 目前用不了**：CPA 给这类模型挑账号时会跳过 Free 计划的 codex 账号（`isFreeCodexAuth`），只有 Free 账号时永远返回 `auth_not_found`。接入付费 ChatGPT 账号之前用 gemini。
 - **请求必须带 User-Agent**：CPA 前面有 Cloudflare，urllib 默认的 UA 会被以 1010 拦下。
-- `image_size` 默认 `2K`。传 `--image-size ""` 就不传这个字段，退回接口默认的 1K。
+- **默认不传 `image_size`（接口默认 1K）**：2026-10-02 实测 2K 的 3:4 要 135 秒，CPA 前面的 Cloudflare 100 秒就断开（HTTP 524），图可能已经出了、额度也花了却收不到。1K 约 25–65 秒。`--image-size 2K` 只在直连、不经 Cloudflare 时用。
 
 ## 比例
 

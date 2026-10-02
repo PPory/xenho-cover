@@ -222,7 +222,7 @@ def main() -> int:
     parser.add_argument("--env-file", help="dotenv file with XENHO_COVER_* or the workbench AGENT_LLM_BASE_URL / AGENT_LLM_API_KEY")
     parser.add_argument("--base-url", help="Override the proxy base URL (…/v1)")
     parser.add_argument("--model", help=f"Override model; defaults to {DEFAULT_MODEL}")
-    parser.add_argument("--image-size", default="2K", help='gemini only: "1K", "2K" or "" to omit')
+    parser.add_argument("--image-size", default="", help='gemini only: "" (omit, the API default 1K), "1K" or "2K"; 2K can exceed the 100 s Cloudflare limit')
     parser.add_argument("--out", help="Where to save the image (extension follows the returned format)")
     parser.add_argument("--timeout", type=int, default=240, help="HTTP timeout seconds")
     parser.add_argument("--result-file", help="Known JSON output path for the host to read after execution")
