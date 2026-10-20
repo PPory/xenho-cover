@@ -123,6 +123,8 @@ def api_ratio_for(requested: str, model: str) -> str:
         value = ratio_value(requested)
         return "1536x1024" if value > 1.1 else "1024x1536" if value < 0.9 else "1024x1024"
     api_ratio = PLATFORM_RATIO_ALIASES.get(requested, requested)
+    if requested == "3.35:1":
+        raise RuntimeError("3.35:1 is the WeChat combined upload, not a generation ratio: generate 2.35:1 and 1:1 separately, then join them with scripts/wechat_combine.py")
     if api_ratio not in GEMINI_RATIOS:
         raise RuntimeError(f"Unsupported ratio {requested}. Use one of: {', '.join(sorted(GEMINI_RATIOS))} (2.35:1 and 5:2 map to 21:9)")
     return api_ratio
@@ -165,6 +167,15 @@ def extract_image(payload: dict[str, Any]) -> tuple[bytes | None, str, str | Non
     return None, "png", None
 
 
+def crop_box(width: int, height: int, target: float) -> tuple[int, int, int, int]:
+    """Largest centered box with width / height == target."""
+    if width / height > target:
+        new_w = round(height * target)
+        return ((width - new_w) // 2, 0, (width - new_w) // 2 + new_w, height)
+    new_h = round(width / target)
+    return (0, (height - new_h) // 2, width, (height - new_h) // 2 + new_h)
+
+
 def center_crop(path: Path, ratio: str) -> Path | None:
     """Crop to the design ratio when Pillow is installed; otherwise leave the original."""
     try:
@@ -176,14 +187,8 @@ def center_crop(path: Path, ratio: str) -> Path | None:
         width, height = image.size
         if abs(width / height - target) < 0.01:
             return None
-        if width / height > target:
-            new_w = round(height * target)
-            box = ((width - new_w) // 2, 0, (width - new_w) // 2 + new_w, height)
-        else:
-            new_h = round(width / target)
-            box = (0, (height - new_h) // 2, width, (height - new_h) // 2 + new_h)
         out = path.with_name(path.stem + "-cropped" + path.suffix)
-        image.crop(box).save(out)
+        image.crop(crop_box(width, height, target)).save(out)
         return out
 
 

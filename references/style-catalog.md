@@ -107,7 +107,7 @@
 19 个新风格默认 3:4 竖版，都在 `META.md` 的 `cover_shape_adaptation` 里写了横版做法。
 
 - **小红书 / 视频号（3:4）**：信息流里最抢眼的是 `concept-still-life`、`exhibition-poster`、`jp-magazine-special`、`thermal-receipt`；最有设计感的是 `tile-crossword`、`dot-matrix-spec`、`apothecary-label`；其余新风格都是原生竖版。旧风格中 `polish-grain-collage`、`swiss-grid-scrawl`、`film-poster-icon`、`bw-type-specimen` 原生竖版。
-- **公众号（2.35:1）**：横版最舒展的是 `hara-emptiness`（留白更多）、`cloth-book-jacket`、`blueprint-drawing`、`giant-numeral`、`swiss-concert-poster`、`grainy-gradient`；`anthropic-research`、`cinematic-photo-editorial` 原生横版。`tile-crossword` 横版时标题优先横排进格子。`thermal-receipt`、`apothecary-label` 横版要改构图（见各自 META），优先给竖版平台。
+- **公众号（3.35:1 = 横版 2.35:1 + 方版 1:1）**：方版按风格的竖版布局收紧（见 blueprint「公众号双画幅」），所以竖版成立的风格方版基本都成立；竖长构图的 `thermal-receipt`、`apothecary-label` 方版要把物件缩短、标题放大。横版最舒展的是 `hara-emptiness`（留白更多）、`cloth-book-jacket`、`blueprint-drawing`、`giant-numeral`、`swiss-concert-poster`、`grainy-gradient`；`anthropic-research`、`cinematic-photo-editorial` 原生横版。`tile-crossword` 横版时标题优先横排进格子。`thermal-receipt`、`apothecary-label` 横版要改构图（见各自 META），优先给竖版平台。
 - **X（5:2）**：同公众号，避开需要纵深的 `apothecary-label`、`archive-index-card`。
 - **YouTube（16:9）**：同公众号做法，左右留白比公众号多一些。
 
