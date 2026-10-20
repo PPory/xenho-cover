@@ -1,16 +1,16 @@
 # xenho-cover
 
-Claude Code skill：把文章 / 主题变成封面图像提示词（Prompt 模式），或经 OpenAI 兼容的图像接口直接出图（Direct 模式），给辛禾自己发小红书、公众号、X、视频号、YouTube 时配封面用。
+Claude Code skill：把文章 / 主题变成封面图像提示词（Prompt 模式），或直接出图（Direct 模式，默认经本机 Codex CLI，备选 OpenAI 兼容的图像接口），给辛禾自己发小红书、公众号、X、视频号、YouTube 时配封面用。
 
 ## 目标
 
-- 输入一篇文章或一个主题，产出一份完整图像生成提示词；Direct 模式再经图像接口出图（默认 `gpt-image-2`），每个画幅最多出一次图
+- 输入一篇文章或一个主题，产出一份完整图像生成提示词；Direct 模式再出图（默认本机 Codex 的 GPT Image，不需要 key；备选图像接口 `--backend api`），每个画幅最多出一次图
 - 风格库与工作流分离：加新风格只加 `styles/{id}/` 文件夹，不改 SKILL.md
 - 最终提示词必须是「编译融合」的产物，不是「封面指令 + 风格原文」两段拼接
 
 ## 技术栈
 
-- Markdown skill + 两个 Python 脚本：出图 `scripts/cover_generate.py`（只用标准库；装了 Pillow 时顺手裁到设计比例）、公众号拼合 `scripts/wechat_combine.py`（需要 Pillow）
+- Markdown skill + 两个 Python 脚本：出图 `scripts/cover_generate.py`（只用标准库，默认调本机 `codex exec`；装了 Pillow 时顺手裁到设计比例并查透明底）、公众号拼合 `scripts/wechat_combine.py`（需要 Pillow）
 - 架构参考 [adrianpunk/Punk-Skill](https://github.com/adrianpunk/Punk-Skill) 的 punk-cover
 
 ## 启动

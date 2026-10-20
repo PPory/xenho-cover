@@ -7,7 +7,7 @@
 两种模式：
 
 - **Prompt 模式**：只产提示词。提示词是自包含的：填实了色值、构图、字体、文字白名单和终检标准，复制粘贴到 GPT Image 系列即可用。README 里的全部示例图都由这些提示词经 GPT Image-2 直接生成，未做任何后期修改。
-- **Direct 模式**：编译同一份提示词后经任意 OpenAI 兼容的图像接口直接出图，默认模型 `gpt-image-2`（也可以指定 `gemini-3.1-flash-image`）。`scripts/cover_generate.py` 内置防重复出图：每个画幅最多发一次（公众号是横版 + 方版两个画幅），没拿到输出也不会自动重发。配置见 [`references/direct-mode.md`](references/direct-mode.md)。
+- **Direct 模式**：编译同一份提示词后直接出图。默认经本机 [Codex CLI](https://github.com/openai/codex) 的 GPT Image 出图，用你的 ChatGPT 账号，不需要 API key；也可以接任意 OpenAI 兼容的图像接口（`--backend api`）。`scripts/cover_generate.py` 内置防重复出图：每个画幅最多发一次（公众号是横版 + 方版两个画幅），没拿到输出也不会自动重发。配置见 [`references/direct-mode.md`](references/direct-mode.md)。
 
 ## 安装
 
@@ -231,7 +231,7 @@ xenho-cover/
 │   └── direct-mode.md              # Direct 模式：配置、端点、比例、防重复
 ├── scripts/cover_generate.py   # Direct 模式唯一的出图入口（标准库）
 ├── scripts/wechat_combine.py   # 公众号横版 + 方版拼成 3.35:1（Pillow）
-├── tests/test_cover_generate.py    # 离线测试：本机假代理，不花额度
+├── tests/test_cover_generate.py    # 离线测试：假 Codex + 本机假代理，不花额度
 ├── tests/test_wechat_combine.py    # 离线测试：拼合比例与左右来源
 ├── styles/{style-id}/
 │   ├── META.md                 # 结构化锚点（色板、构图适配、微排版槽位、必守项、禁用项）

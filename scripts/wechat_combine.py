@@ -18,20 +18,10 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from cover_generate import crop_box  # noqa: E402
+from cover_generate import MAX_TRANSPARENT_SHARE, crop_box, transparent_share  # noqa: E402
 
 HEADER_RATIO = 2.35
 FRAMING_HINT = "上传后在公众号后台：2.35:1 框拖到最左，1:1 框拖到最右"
-# gpt-image sometimes returns a cut-out with a transparent background: the cover colour is
-# gone and only a soft shadow around the object is left. Flattening cannot bring it back.
-MAX_TRANSPARENT_SHARE = 0.01
-
-
-def transparent_share(image) -> float:
-    if "A" not in image.getbands():
-        return 0.0
-    histogram = image.getchannel("A").histogram()
-    return sum(histogram[:200]) / sum(histogram)
 
 
 def combine(header_path: Path, square_path: Path, out_path: Path) -> dict:

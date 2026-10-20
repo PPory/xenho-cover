@@ -1,21 +1,25 @@
 #!/usr/bin/env python3
-"""Single-shot cover image client for an OpenAI-compatible image API (relay or proxy),
-with duplicate-request protection.
+"""Single-shot cover image client with duplicate-request protection.
 
 The guarantee is conservative: one invocation creates at most one image request.
 Re-running the same request shortly afterwards reuses the cached result instead of
-POSTing again. If a previous request may have been sent but no final response was
+requesting again. If a previous request may have been sent but no final response was
 recorded, the script refuses to retry automatically.
 
-Two protocols, picked by model name:
-- gpt-image-* (default gpt-image-2): POST {base}/images/generations with a custom size
-  computed from the design ratio and an opaque background; the image comes back as
-  data[0].b64_json or data[0].url. (Some proxies skip free-plan accounts for these models.)
-- gemini-*-image: POST {base}/chat/completions with a top-level image_config.aspect_ratio;
-  the image comes back as a data URL in choices[0].message.images[].image_url.url.
+Two backends:
+- codex (default): the local Codex CLI's built-in image tool, signed in with ChatGPT.
+  `codex exec` gets the prompt on stdin with a size hint; the image lands in
+  $CODEX_HOME/generated_images/<session id>/ and is copied out. No key, no proxy.
+- api: an OpenAI-compatible image API (relay or proxy), protocol picked by model name:
+  - gpt-image-* (default gpt-image-2): POST {base}/images/generations with a custom size
+    computed from the design ratio and an opaque background; the image comes back as
+    data[0].b64_json or data[0].url. (Some proxies skip free-plan accounts for these models.)
+  - gemini-*-image: POST {base}/chat/completions with a top-level image_config.aspect_ratio;
+    the image comes back as a data URL in choices[0].message.images[].image_url.url.
 
-Standard library only (Pillow is used for the final crop when it happens to be
-installed). Secrets come from XENHO_COVER_API_KEY or an --env-file and are never printed.
+Standard library only (Pillow is used for the final crop and the transparency check when
+it happens to be installed). API secrets come from XENHO_COVER_API_KEY or an --env-file
+and are never printed.
 """
 
 from __future__ import annotations
@@ -27,7 +31,9 @@ import json
 import os
 import re
 import shutil
+import subprocess
 import sys
+import tempfile
 import time
 import urllib.error
 import urllib.request
@@ -35,7 +41,9 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
+BACKENDS = ("codex", "api")
 DEFAULT_MODEL = "gpt-image-2"
+DEFAULT_TIMEOUT = {"codex": 600, "api": 240}
 DEFAULT_JOBS_DIR = Path.home() / ".xenho-cover" / "jobs"
 DEFAULT_OUT_DIR = Path.home() / ".claude" / "data" / "xenho-cover"
 USER_AGENT = "xenho-cover/3.0-single-shot"
@@ -47,6 +55,16 @@ GEMINI_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9"
 # Platform ratios get hand-picked sizes that hit the ratio exactly; anything else gets a 2048 long edge.
 GPT_IMAGE_SIZES = {"2.35:1": "1920x816", "5:2": "2560x1024", "3:4": "1536x2048", "16:9": "2048x1152", "1:1": "1536x1536"}
 GPT_IMAGE_MAX_RATIO = 3.0
+# Codex's image tool takes no size parameter: the size is asked for in words, and the
+# agent is told to hand the brief to the tool untouched. Proven on the 2026-10 gallery runs.
+CODEX_INSTRUCTION = """Use your built-in image generation tool exactly once to generate ONE image. Image size: {size}. Pass the design brief below to the tool as the image prompt, verbatim, without rewriting, shortening or translating it. Do not create or edit any files, do not run shell commands, do not generate more than one image. After the image is generated, reply with just DONE.
+
+----- DESIGN BRIEF -----
+{prompt}"""
+# gpt-image sometimes returns a cut-out with a transparent background: the cover colour is
+# gone and only a soft shadow around the object is left. The API backend asks for an opaque
+# background; Codex cannot, so its output is checked instead.
+MAX_TRANSPARENT_SHARE = 0.01
 
 
 def utc_now() -> str:
@@ -85,7 +103,7 @@ def read_env_file(path: str | None) -> dict[str, str]:
     return env
 
 
-def resolve_config(args: argparse.Namespace) -> tuple[str, str, str]:
+def resolve_config(args: argparse.Namespace) -> dict[str, str]:
     """XENHO_COVER_* first; an --env-file may supply them or the workbench's AGENT_LLM_* pair."""
     file_env = read_env_file(args.env_file)
 
@@ -96,10 +114,16 @@ def resolve_config(args: argparse.Namespace) -> tuple[str, str, str]:
                 return value.strip()
         return ""
 
-    base = (args.base_url or pick("XENHO_COVER_BASE_URL", "AGENT_LLM_BASE_URL")).rstrip("/")
-    key = pick("XENHO_COVER_API_KEY", "AGENT_LLM_API_KEY")
-    model = args.model or pick("XENHO_COVER_MODEL", "COVER_IMAGE_MODEL") or DEFAULT_MODEL
-    return base, key, model
+    backend = (args.backend or pick("XENHO_COVER_BACKEND") or BACKENDS[0]).lower()
+    if backend not in BACKENDS:
+        raise RuntimeError(f"Unknown backend {backend!r}; use one of: {', '.join(BACKENDS)}")
+    return {
+        "backend": backend,
+        "base": (args.base_url or pick("XENHO_COVER_BASE_URL", "AGENT_LLM_BASE_URL")).rstrip("/"),
+        "key": pick("XENHO_COVER_API_KEY", "AGENT_LLM_API_KEY"),
+        "model": args.model or pick("XENHO_COVER_MODEL", "COVER_IMAGE_MODEL") or DEFAULT_MODEL,
+        "codex_model": args.codex_model or pick("XENHO_COVER_CODEX_MODEL"),
+    }
 
 
 def read_prompt(args: argparse.Namespace) -> str:
@@ -130,12 +154,34 @@ def gpt_image_size(ratio: str) -> str:
     return f"{width}x{height}"
 
 
-def api_ratio_for(requested: str, model: str) -> str:
+def check_ratio(requested: str) -> str:
     requested = requested.strip()
     if not re.fullmatch(r"\d+(\.\d+)?:\d+(\.\d+)?", requested):
         raise RuntimeError(f"Ratio must look like 3:4 or 2.35:1, got {requested!r}")
     if requested == "3.35:1":
         raise RuntimeError("3.35:1 is the WeChat combined upload, not a generation ratio: generate 2.35:1 and 1:1 separately, then join them with scripts/wechat_combine.py")
+    return requested
+
+
+def codex_size_hint(ratio: str) -> str:
+    # Codex draws with gpt-image, so the same edge limits apply; the example size makes the ratio unambiguous
+    return f"aspect ratio {ratio} (for example {gpt_image_size(ratio)}); if that exact size is not supported, use the closest size with the same aspect ratio"
+
+
+def codex_command(codex_model: str) -> list[str] | None:
+    """`codex exec` reading the instruction from stdin; None when no codex is installed.
+    XENHO_COVER_CODEX points at another executable (a .py file runs with this Python), for tests."""
+    exe = os.environ.get("XENHO_COVER_CODEX") or shutil.which("codex")
+    if not exe:
+        return None
+    head = [sys.executable, exe] if exe.endswith(".py") else [exe]
+    # low effort: the agent only forwards the brief to its image tool
+    cmd = head + ["exec", "--skip-git-repo-check", "-s", "read-only", "-c", 'model_reasoning_effort="low"']
+    return cmd + (["-m", codex_model] if codex_model else [])
+
+
+def api_ratio_for(requested: str, model: str) -> str:
+    requested = check_ratio(requested)
     if is_gpt_image(model):
         return gpt_image_size(requested)
     api_ratio = PLATFORM_RATIO_ALIASES.get(requested, requested)
@@ -207,6 +253,56 @@ def center_crop(path: Path, ratio: str) -> Path | None:
         return out
 
 
+def transparent_share(image) -> float:
+    if "A" not in image.getbands():
+        return 0.0
+    histogram = image.getchannel("A").histogram()
+    return sum(histogram[:200]) / sum(histogram)
+
+
+def transparency_warning(path: Path) -> str | None:
+    try:
+        from PIL import Image  # type: ignore
+    except Exception:
+        return None
+    with Image.open(path) as image:
+        share = transparent_share(image)
+    if share <= MAX_TRANSPARENT_SHARE:
+        return None
+    return f"{share:.0%} of the image is transparent: the background colour is gone. Regenerate with the prompt's opaque sentence intact; do not upload this one"
+
+
+def run_codex(cmd: list[str], instruction: str, timeout: int) -> dict[str, Any]:
+    """Run codex once. Returns {"image": Path} or {"error": payload, "state": next_state}."""
+    workdir = Path(tempfile.mkdtemp(prefix="xenho-cover-codex-"))
+    timed_out = False
+    try:
+        proc = subprocess.run(cmd + ["-C", str(workdir), "-"], input=instruction.encode("utf-8"),
+                              stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=timeout)
+        output, code = proc.stdout, proc.returncode
+    except subprocess.TimeoutExpired as exc:
+        output, code, timed_out = exc.output or b"", None, True
+    finally:
+        shutil.rmtree(workdir, ignore_errors=True)
+    text = output.decode("utf-8", errors="replace")
+    tail = redact("\n".join(text.strip().splitlines()[-12:]))
+    match = re.search(r"session id:\s*([0-9a-fA-F-]{8,})", text)
+    if match:
+        folder = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex") / "generated_images" / match.group(1)
+        images = sorted(folder.glob("*.png"), key=lambda p: p.stat().st_mtime)
+        if images:
+            return {"image": images[-1]}
+    if timed_out:
+        return {"state": "uncertain", "error": {"ok": False, "category": "uncertain_timeout", "status": "uncertain",
+                "error": f"Codex did not finish within {timeout}s; it may still produce an image",
+                "note": "Automatic retry is blocked. Look in ~/.codex/generated_images before asking the user about a new request.", "codex_output": tail}}
+    if code:
+        return {"state": "terminal_error", "error": {"ok": False, "category": "codex", "status": "failed", "exit_code": code,
+                "error": "Codex exited with an error (not signed in, out of image quota, or offline). Run `codex login` or check the output below", "codex_output": tail}}
+    return {"state": "terminal_error", "error": {"ok": False, "category": "response", "status": "failed",
+            "error": "Codex finished but produced no image", "codex_output": tail}}
+
+
 def emit(payload: dict[str, Any], result_file: Path | None, code: int = 0) -> int:
     if result_file is not None:
         atomic_json(result_file, payload)
@@ -234,17 +330,19 @@ def parse_iso(value: str | None) -> float | None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Single-shot cover image client (OpenAI-compatible image API)")
+    parser = argparse.ArgumentParser(description="Single-shot cover image client (local Codex CLI, or an OpenAI-compatible image API)")
     prompt_group = parser.add_mutually_exclusive_group(required=True)
     prompt_group.add_argument("--prompt", help="Final compiled image prompt")
     prompt_group.add_argument("--prompt-file", help="UTF-8 file containing the final prompt")
     parser.add_argument("--ratio", required=True, help='Design ratio, e.g. "3:4", "2.35:1", "5:2"')
-    parser.add_argument("--env-file", help="dotenv file with XENHO_COVER_* or the workbench AGENT_LLM_BASE_URL / AGENT_LLM_API_KEY")
-    parser.add_argument("--base-url", help="Override the proxy base URL (…/v1)")
-    parser.add_argument("--model", help=f"Override model; defaults to {DEFAULT_MODEL}")
-    parser.add_argument("--image-size", default="", help='gemini only: "" (omit, the API default 1K), "1K" or "2K"; 2K can exceed the 100 s Cloudflare limit')
+    parser.add_argument("--backend", choices=BACKENDS, help="codex (default; local Codex CLI signed in with ChatGPT) or api (OpenAI-compatible image API)")
+    parser.add_argument("--codex-model", help="codex only: Codex model to run; defaults to the one in Codex's own config")
+    parser.add_argument("--env-file", help="api only: dotenv file with XENHO_COVER_* or the workbench AGENT_LLM_BASE_URL / AGENT_LLM_API_KEY")
+    parser.add_argument("--base-url", help="api only: override the proxy base URL (…/v1)")
+    parser.add_argument("--model", help=f"api only: override the image model; defaults to {DEFAULT_MODEL}")
+    parser.add_argument("--image-size", default="", help='api + gemini only: "" (omit, the API default 1K), "1K" or "2K"; 2K can exceed the 100 s Cloudflare limit')
     parser.add_argument("--out", help="Where to save the image (extension follows the returned format)")
-    parser.add_argument("--timeout", type=int, default=240, help="HTTP timeout seconds")
+    parser.add_argument("--timeout", type=int, help="Seconds to wait: defaults to 600 for codex, 240 for api")
     parser.add_argument("--result-file", help="Known JSON output path for the host to read after execution")
     parser.add_argument("--jobs-dir", default=str(DEFAULT_JOBS_DIR), help="Persistent duplicate-guard directory")
     parser.add_argument("--dedupe-minutes", type=int, default=30, help="Reuse finished identical requests within this window")
@@ -254,18 +352,37 @@ def main() -> int:
     result_file = Path(args.result_file).expanduser() if args.result_file else None
 
     try:
-        base, key, model = resolve_config(args)
+        config = resolve_config(args)
+        backend, base, key = config["backend"], config["base"], config["key"]
+        timeout = args.timeout or DEFAULT_TIMEOUT[backend]
         prompt = read_prompt(args)
-        api_ratio = api_ratio_for(args.ratio, model)
-        endpoint, body = build_request(base or "<missing>", model, prompt, api_ratio, args.image_size)
+        if backend == "codex":
+            model = config["codex_model"] or "codex-default"
+            api_ratio = check_ratio(args.ratio)
+            size_hint = codex_size_hint(api_ratio)
+            cmd = codex_command(config["codex_model"])
+            instruction = CODEX_INSTRUCTION.format(size=size_hint, prompt=prompt)
+            endpoint, body = "codex exec", {"model": model, "instruction": instruction}
+        else:
+            model = config["model"]
+            api_ratio = api_ratio_for(args.ratio, model)
+            endpoint, body = build_request(base or "<missing>", model, prompt, api_ratio, args.image_size)
         fingerprint = request_fingerprint(endpoint, body)
         if args.dry_run:
-            shown = {k: v for k, v in body.items() if k not in {"prompt", "messages"}}
-            return emit({"ok": bool(base and key), "dry_run": True, "endpoint": endpoint, "model": model,
-                         "requested_ratio": args.ratio, "api_ratio": api_ratio, "body": shown,
-                         "prompt_chars": len(prompt), "has_key": bool(key), "request_fingerprint": fingerprint,
-                         "api_request_sent": False}, result_file, 0 if base and key else 2)
-        if not base or not key:
+            if backend == "codex":
+                ready = cmd is not None
+                info = {"codex_command": " ".join(cmd) if cmd else None, "size_hint": size_hint}
+            else:
+                ready = bool(base and key)
+                info = {"endpoint": endpoint, "body": {k: v for k, v in body.items() if k not in {"prompt", "messages"}}, "has_key": bool(key)}
+            return emit({"ok": ready, "dry_run": True, "backend": backend, "model": model, "requested_ratio": args.ratio,
+                         "api_ratio": api_ratio, **info, "prompt_chars": len(prompt), "request_fingerprint": fingerprint,
+                         "api_request_sent": False}, result_file, 0 if ready else 2)
+        if backend == "codex" and cmd is None:
+            return emit({"ok": False, "category": "codex_missing",
+                         "error": "Codex CLI not found on PATH: install it and run `codex login` (ChatGPT sign-in), or use --backend api with an image API",
+                         "api_request_sent": False, "safe_to_retry": True}, result_file, 2)
+        if backend == "api" and (not base or not key):
             return emit({"ok": False, "category": "auth",
                          "error": "Missing base URL or key: set XENHO_COVER_BASE_URL / XENHO_COVER_API_KEY or pass --env-file",
                          "api_request_sent": False, "safe_to_retry": True}, result_file, 2)
@@ -303,7 +420,7 @@ def main() -> int:
                 return emit(context(cached, True), result_file, 0 if cached.get("ok") else 1)
 
         if args.force_new and lock_path.exists():
-            if time.time() - lock_path.stat().st_mtime > args.timeout + 60:
+            if time.time() - lock_path.stat().st_mtime > timeout + 60:
                 lock_path.unlink(missing_ok=True)
             else:
                 return emit(context({"ok": False, "category": "duplicate_guard", "status": "busy",
@@ -323,7 +440,7 @@ def main() -> int:
                 archive_previous(job_dir)
             started = utc_now()
             state = {"state": "submitting", "created_at": started, "updated_at": started, "request_fingerprint": fingerprint,
-                     "requested_ratio": args.ratio, "api_ratio": api_ratio, "model": model, "endpoint": endpoint}
+                     "requested_ratio": args.ratio, "api_ratio": api_ratio, "backend": backend, "model": model, "endpoint": endpoint}
             atomic_json(state_path, state)
             # Known result file before the POST: if the host loses stdout or kills us, it
             # still reads that a request may have gone out.
@@ -335,11 +452,31 @@ def main() -> int:
 
             def finish(payload: dict[str, Any], next_state: str, code: int) -> int:
                 payload = context(dict(payload, api_request_sent=True, safe_to_retry=False,
-                                       requested_ratio=args.ratio, api_ratio=api_ratio, model=model), False)
+                                       requested_ratio=args.ratio, api_ratio=api_ratio, backend=backend, model=model), False)
                 atomic_json(cached_path, payload)
                 state.update({"state": next_state, "updated_at": utc_now()})
                 atomic_json(state_path, state)
                 return emit(payload, result_file, code)
+
+            def save(data: bytes, ext: str, needs_crop: bool) -> int:
+                out = Path(args.out).expanduser() if args.out else DEFAULT_OUT_DIR / f"{datetime.now().strftime('%Y%m%d-%H%M%S')}-{fingerprint[:8]}.{ext}"
+                out = out.with_suffix("." + ext)
+                out.parent.mkdir(parents=True, exist_ok=True)
+                out.write_bytes(data)
+                cropped = center_crop(out, args.ratio)
+                return finish({"ok": True, "category": "success", "status": "succeeded", "image_path": str(out),
+                               "cropped_path": str(cropped) if cropped else None, "bytes": len(data),
+                               "transparent_warning": transparency_warning(out),
+                               "crop_note": f"Generated at {api_ratio}; center-crop to {args.ratio} before uploading" if needs_crop and not cropped else None},
+                              "succeeded", 0)
+
+            if backend == "codex":
+                outcome = run_codex(cmd, instruction, timeout)
+                if "error" in outcome:
+                    return finish(outcome["error"], outcome["state"], 1)
+                image = outcome["image"]
+                # sizes come out at the asked ratio within a pixel or two; center_crop evens out anything larger
+                return save(image.read_bytes(), image.suffix.lstrip(".").lower() or "png", False)
 
             request = urllib.request.Request(endpoint, data=json.dumps(body, ensure_ascii=False).encode("utf-8"), method="POST", headers={
                 "Authorization": f"Bearer {key}", "Content-Type": "application/json", "Accept": "application/json",
@@ -347,7 +484,7 @@ def main() -> int:
                 "User-Agent": USER_AGENT,
             })
             try:
-                with urllib.request.urlopen(request, timeout=args.timeout) as response:
+                with urllib.request.urlopen(request, timeout=timeout) as response:
                     raw = response.read().decode("utf-8", errors="replace")
             except urllib.error.HTTPError as exc:
                 text = exc.read().decode("utf-8", errors="replace")
@@ -371,19 +508,10 @@ def main() -> int:
                 return finish({"ok": False, "category": "response", "status": "failed",
                                "error": "The response contains no image", "model_text": redact(str(text)[:300])}, "terminal_error", 1)
             if data is None:
-                with urllib.request.urlopen(urllib.request.Request(remote_url, headers={"User-Agent": USER_AGENT}), timeout=args.timeout) as r:
+                with urllib.request.urlopen(urllib.request.Request(remote_url, headers={"User-Agent": USER_AGENT}), timeout=timeout) as r:
                     data = r.read()
-            out = Path(args.out).expanduser() if args.out else DEFAULT_OUT_DIR / f"{datetime.now().strftime('%Y%m%d-%H%M%S')}-{fingerprint[:8]}.{ext}"
-            out = out.with_suffix("." + ext)
-            out.parent.mkdir(parents=True, exist_ok=True)
-            out.write_bytes(data)
-            cropped = center_crop(out, args.ratio)
             # gpt-image sizes hit the design ratio; gemini's 21:9 already is the 2.35:1 cover; anything else needs a crop
-            needs_crop = not is_gpt_image(model) and args.ratio not in {api_ratio, "2.35:1"}
-            return finish({"ok": True, "category": "success", "status": "succeeded", "image_path": str(out),
-                           "cropped_path": str(cropped) if cropped else None, "bytes": len(data),
-                           "crop_note": f"Generated at {api_ratio}; center-crop to {args.ratio} before uploading" if needs_crop and not cropped else None},
-                          "succeeded", 0)
+            return save(data, ext, not is_gpt_image(model) and args.ratio not in {api_ratio, "2.35:1"})
         finally:
             # A hard kill skips this; the stale lock plus state=submitting then block a duplicate on purpose.
             try:
