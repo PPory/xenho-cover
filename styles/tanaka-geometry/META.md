@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/tanaka-geometry/STYLE.md
 color_schemes:
   - {id: A, name: 灰米五色, bg: "#E9E4D8", palette: ["#1C1C1C", "#D9412B", "#E3B23C", "#2E4C7D", "#F5F1E6"], default: true}
-  - {id: B, name: 靛底, bg: "#24365C", palette: ["#F5F1E6", "#D9412B", "#E3B23C", "#1C1C1C", "#8FB3D9"]}
-  - {id: C, name: 朱底, bg: "#C9442F", palette: ["#1C1C1C", "#F5F1E6", "#E3B23C", "#2E4C7D", "#E9A79A"]}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 只用最基本的几何形——圆、正方形、半圆、四分之一圆、菱形——在隐形方格网上拼出一个可辨认的形象（人物侧脸、手、动物、器物）
   - 五色平涂：全部纯色、无渐变、无阴影、无描边，边缘锐利

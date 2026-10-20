@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/dot-matrix-spec/STYLE.md
 color_schemes:
   - {id: A, name: 冷白橙红, bg: "#F2F2F0", dot: "#111111", accent: "#FF4F1F", default: true}
-  - {id: B, name: 炭黑橙, bg: "#161616", dot: "#F2F2F0", accent: "#FF6A1F"}
-  - {id: C, name: 铝灰黄, bg: "#D9D9D6", dot: "#111111", accent: "#F5C400"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - Teenage Engineering 说明书 + Nothing 点阵字体：冷白底、黑色圆点像素字、一点橙红、工业规格书式的精确排版
   - 一个巨大的点阵符号（数字、乘号、箭头、短词）由圆形实心点构成，是画面主角；其中一部分点用强调色

@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/giant-numeral/STYLE.md
 color_schemes:
   - {id: A, name: 白黑信号红, bg: "#FFFFFF", glyph: "#111111", accent: "#E10600", default: true}
-  - {id: B, name: 黑白克莱因蓝, bg: "#111111", glyph: "#F2F2F0", accent: "#1F3FD6"}
-  - {id: C, name: 米黄黑橙, bg: "#F1ECDF", glyph: "#111111", accent: "#FF5A1F"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - Experimental Jetset「把语言变成物件」：一个巨大的无衬线字形（数字优先）高过画面、从一侧和底部出血裁切，是整个版面的建筑结构
   - 黑白 + 一个强调色；强调色只出现在一条横贯全宽的粗色条上

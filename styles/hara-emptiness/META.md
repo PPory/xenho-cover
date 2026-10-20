@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/hara-emptiness/STYLE.md
 color_schemes:
   - {id: A, name: 米白纸, bg: "#F2EFE8", text: "#3A3A38", sub: "#8A8780", default: true}
-  - {id: B, name: 素灰, bg: "#E4E2DD", text: "#2F2F2D", sub: "#7D7A74"}
-  - {id: C, name: 原木, bg: "#EDE6DA", text: "#3B342C", sub: "#8C8274"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 「空」不是什么都没有，而是等待被填满的容器：画面 80% 以上是安静的底色，只有一个很小的物件或一处很小的场景
   - 主体是低饱和的静物摄影：一两件日常物（石头、碗、纸、木、布、玻璃），侧窗自然柔光，长而柔和的影子

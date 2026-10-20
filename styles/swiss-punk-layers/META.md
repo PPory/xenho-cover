@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/swiss-punk-layers/STYLE.md
 color_schemes:
   - {id: A, name: 青黑, paper: "#EFEBE1", ink1: "#00A3D9", ink2: "#111111", default: true}
-  - {id: B, name: 洋红黑, paper: "#EFEBE1", ink1: "#E5007E", ink2: "#111111"}
-  - {id: C, name: 橙黑, paper: "#EFEBE1", ink1: "#FF6A13", ink2: "#111111"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - Wolfgang Weingart 打破瑞士规范的方式：把网点、莫尔纹、叠印网屏当作图形本身，层层叠压出纵深
   - 只用两色油墨（一个彩色 + 黑），叠印处自然变深

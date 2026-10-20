@@ -12,10 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/concept-still-life/STYLE.md
 color_schemes:
   - {id: A, name: 钴蓝, backdrop: "#2D5BDA", text: "#FFFFFF", default: true}
-  - {id: B, name: 番茄红, backdrop: "#E2452F", text: "#FFFFFF"}
-  - {id: C, name: 奶油黄, backdrop: "#F3D35B", text: "#141414"}
-  - {id: D, name: 鼠尾草绿, backdrop: "#9DB8A0", text: "#141414"}
-  - {id: E, name: 淡粉, backdrop: "#F2C6C2", text: "#141414"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 纽约时报杂志 / 顶级广告的概念静物：饱和无缝背景纸 + 一个超现实但一眼看懂的物件组合
   - 物件组合 = 两个日常物的「错位嫁接」：A 物 + B 物的功能 / 部件 → 生成一个观点（如发条钥匙插在便利贴上 = 清单能自己运转）

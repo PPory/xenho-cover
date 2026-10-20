@@ -12,9 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/jp-magazine-special/STYLE.md
 color_schemes:
   - {id: A, name: 番茄红, bg: "#E8442E", text: "#FFFFFF", default: true}
-  - {id: B, name: 钴蓝, bg: "#2B4BD8", text: "#FFFFFF"}
-  - {id: C, name: 芥末黄, bg: "#F2C230", text: "#141414"}
-  - {id: D, name: 薄荷绿, bg: "#9ED9C4", text: "#141414"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 日本生活方式杂志（BRUTUS / POPEYE 一路）的特集封面：明亮纯色底 + 自造粗衬线西文刊名 + 大胆的特集标题 + 一张干净的去底物件照片
   - 对每个微小排版细节的执着：竖排横排混用、字号层级极丰富、细线引出的物件注释标签——热闹但有秩序

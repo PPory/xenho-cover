@@ -12,9 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/thermal-receipt/STYLE.md
 color_schemes:
   - {id: A, name: 钴蓝, bg: "#2340D8", paper: "#FAFAF7", ink: "#141414", default: true}
-  - {id: B, name: 番茄红, bg: "#E8442E", paper: "#FAFAF7", ink: "#141414"}
-  - {id: C, name: 柠檬黄, bg: "#FFE14D", paper: "#FAFAF7", ink: "#141414"}
-  - {id: D, name: 炭黑, bg: "#1A1A1A", paper: "#FAFAF7", ink: "#141414"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 当代平面设计的小票美学：一张细长白色热敏小票平放在饱和纯色底上，从画面顶部外延伸进来，底部锯齿撕口
   - 用一张「账单」讲一个观点：条目行、虚线分隔、合计行——把论点写成一笔账，幽默又有反差

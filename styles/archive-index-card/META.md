@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/archive-index-card/STYLE.md
 color_schemes:
   - {id: A, name: 暖灰卡纸, bg: "#CFCBC2", card: "#F6F1E4", rule_red: "#C8372D", rule_blue: "#9DB4CF", text: "#1E1E1E", default: true}
-  - {id: B, name: 牛皮纸, bg: "#B9976B", card: "#F6F1E4", rule_red: "#C8372D", rule_blue: "#9DB4CF", text: "#1E1E1E"}
-  - {id: C, name: 墨绿呢, bg: "#2F4A3E", card: "#F6F1E4", rule_red: "#C8372D", rule_blue: "#9DB4CF", text: "#1E1E1E"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 图书馆卡片目录 / 设计档案登记卡：一张米白索引卡正面平视放在纯色卡纸底上，对称、克制
   - 卡片是真实的表格排版：顶部红色细横线 + 浅蓝细横格线，底部中央一个打孔圆洞

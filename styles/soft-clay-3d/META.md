@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/soft-clay-3d/STYLE.md
 color_schemes:
   - {id: A, name: 蜜桃糖果, bg: "#F6D5C1", palette: ["#FFF6EC", "#A9C8F0", "#9ED9C4", "#F5D27A"], text: "#3B2A22", default: true}
-  - {id: B, name: 薄荷糖果, bg: "#CDEBDF", palette: ["#FFF6EC", "#F6B7A8", "#A9C8F0", "#F5D27A"], text: "#1F3A33"}
-  - {id: C, name: 薰衣草糖果, bg: "#DCD3F2", palette: ["#FFF6EC", "#F6B7A8", "#9ED9C4", "#F5D27A"], text: "#2E2546"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - Google Material 3 Expressive / Airbnb 式亲和三维：圆润、柔软、哑光，像可以捏的软陶玩具
   - 一个由 2–3 个软陶物件组成的小场景讲隐喻：一个装置、一个开口、一叠卡片、一个按钮

@@ -12,14 +12,12 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/cloth-book-jacket/STYLE.md
 color_schemes:
   - {id: A, name: 墨绿烫金, cloth: "#1F3A2E", foil: "#C9A44C", default: true}
-  - {id: B, name: 深海军蓝烫银, cloth: "#1B2638", foil: "#C8CCD2"}
-  - {id: C, name: 酒红烫金, cloth: "#5A1E24", foil: "#C9A44C"}
-  - {id: D, name: 燕麦布烫黑, cloth: "#D8CDB8", foil: "#1E1E1E"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 一本严肃出版社精装书的封面正面平拍，封面满幅填满画面（看不到书脊、桌面和书的边缘）
   - 真实细纹布面装帧，布纹织理清晰可见
   - 中央一个小而精致的单线烫金徽记，金箔有压印凹陷和细微光泽变化——徽记是隐喻的唯一载体
-  - 全部文字烫金（或烫银 / 烫黑），居中对称，古典而现代，大量留白
+  - 全部文字烫金，居中对称，古典而现代，大量留白
   - Stripe Press / 经典出版社的克制：一个徽记、一个标题、一个作者名
 cover_shape_adaptation:
   - 竖版（3:4）：标题在上部三分之一居中，徽记在画面中心略偏下，作者名在底部居中

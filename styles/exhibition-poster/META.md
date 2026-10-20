@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/exhibition-poster/STYLE.md
 color_schemes:
   - {id: A, name: 冷灰荧光橙, bg: "#E6E6E3", text: "#121212", sticker: "#FF5A36", default: true}
-  - {id: B, name: 白底荧光绿, bg: "#F4F4F1", text: "#121212", sticker: "#C6F432"}
-  - {id: C, name: 黑底荧光粉, bg: "#121212", text: "#F2F2EE", sticker: "#FF4FA3"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 欧洲当代美术馆的展览识别：超粗紧凑的中文黑体主标题撑满上半部，左右边距统一窄
   - 下半部一条细黑线 + 严格等宽三栏信息排版，左对齐、顶部对齐

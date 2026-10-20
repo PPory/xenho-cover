@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/riso-two-ink/STYLE.md
 color_schemes:
   - {id: A, name: 荧光粉 + 中蓝, paper: "#F3EEE2", ink1: "#FF48B0", ink2: "#0078BF", overprint: 深紫, default: true}
-  - {id: B, name: 黄 + 蓝, paper: "#F3EEE2", ink1: "#FFE800", ink2: "#0078BF", overprint: 深绿}
-  - {id: C, name: 橙 + 绿, paper: "#F3EEE2", ink1: "#FF6C2F", ink2: "#00A95C", overprint: 深褐}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 独立出版 zine 的孔版印刷（Risograph）：只用两色油墨，叠印处自然混出第三色
   - Riso 特有的颗粒、油墨不均和 1–2mm 套色错位——手作的温度

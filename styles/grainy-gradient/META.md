@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/grainy-gradient/STYLE.md
 color_schemes:
   - {id: A, name: 日落到天空, bg: "#F5F2EC", orbs: ["#FF7A45", "#B79CFF", "#6FB7FF"], text: "#141414", default: true}
-  - {id: B, name: 森林晨雾, bg: "#F1F3EE", orbs: ["#9ED38B", "#F5D76E", "#7FC8C2"], text: "#141414"}
-  - {id: C, name: 夜色, bg: "#121318", orbs: ["#5E6AD2", "#E25C9B", "#F2A65A"], text: "#F2F2EE"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 当代品牌视觉的柔焦色彩光晕 + 均匀胶片颗粒：温暖、现代、好看
   - 2–4 个高度虚化、彼此融合的色彩光球，光球的数量、位置、明暗关系承载隐喻（如最后一个更亮更扩散）

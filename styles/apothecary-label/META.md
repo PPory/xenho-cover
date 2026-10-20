@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/apothecary-label/STYLE.md
 color_schemes:
   - {id: A, name: 琥珀玻璃, vessel: "#7A3E12", label: "#F3EEE3", text: "#1B1B1B", default: true}
-  - {id: B, name: 墨绿玻璃, vessel: "#1F3B2C", label: "#F3EEE3", text: "#1B1B1B"}
-  - {id: C, name: 磨砂白瓷, vessel: "#E9E6E0", label: "#1B1B1B", text: "#F3EEE3"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 高端香氛与护肤品牌的包装标签语言：一张纸标签贴在玻璃瓶身上，瓶身局部特写满幅（看不到瓶口瓶底）
   - 标签内全部居中对称：顶部等宽小字 → 细衬线宋体主标题 → 细横线 → 副标题 → 两行配方式等宽小字 → 底部大号细体编号

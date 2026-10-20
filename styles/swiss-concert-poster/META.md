@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/swiss-concert-poster/STYLE.md
 color_schemes:
   - {id: A, name: 黑白信号红, bg: "#111111", form: "#F2F2F0", accent: "#E4002B", default: true}
-  - {id: B, name: 白黑, bg: "#F2F2F0", form: "#111111", accent: "#E4002B"}
-  - {id: C, name: 深蓝白黄, bg: "#14213D", form: "#F2F2F0", accent: "#FCA311"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - Josef Müller-Brockmann 音乐会海报：用纯几何图形的数学节律表达内容——弧、圆、条、方块按严格比例重复、递增、旋转
   - 节律是主角：一组几何单元重复若干次后，在某一处发生变化（换成强调色、换方向、继续扩展），这个变化就是隐喻

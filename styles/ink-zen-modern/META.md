@@ -12,7 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/ink-zen-modern/STYLE.md
 color_schemes:
   - {id: A, name: 宣纸墨朱, bg: "#F4F0E6", ink: "#1A1A1A", accent: "#C8372D", default: true}
-  - {id: B, name: 灰宣淡墨, bg: "#E9E5DA", ink: "#2B2B2B", accent: "#B23A2E"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 宣纸底 + 一组毛笔笔触 + 一枚朱红小方印 + 现代宋体排版——东方书画语言放进现代平面设计的秩序
   - 主图形是抽象的笔触符号（圆相、一横、一点、一道飞白），不画具象山水、人物、花鸟

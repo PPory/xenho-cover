@@ -12,8 +12,7 @@ optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出
 source: styles/blueprint-drawing/STYLE.md
 color_schemes:
   - {id: A, name: 普鲁士蓝晒图, bg: "#123C7A", line: "#F2F4F8", default: true}
-  - {id: B, name: 赭红晒图, bg: "#7A2E1E", line: "#F6EFE6"}
-  - {id: C, name: 白底蓝线, bg: "#F4F1EA", line: "#1F4FA3"}
+color_lock: 只用这一套配色（即 example-image 里样图的配色），不换色；新配色要先出图给用户确认再加
 style_anchors:
   - 建筑与工业设计的晒图蓝图（cyanotype）：深普鲁士蓝底、白色细线工程制图、晒图纸的斑驳与纸纹
   - 全画面极淡坐标网格线；四角白色图框角线
