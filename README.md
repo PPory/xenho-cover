@@ -113,67 +113,110 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 
 ## 风格示例
 
-全部由 GPT Image 系列直接生成，未做任何后期修改。下方为缩略图，**点击可查看全尺寸原图**。
+全部由 GPT Image 直接生成，未做任何后期修改。每个风格配一个最适合它的题目，可以当成「什么内容配什么风格」的参考。下方为缩略图，**点击可查看全尺寸原图**。
 
-### 2026-10 新增（小红书 `3:4`）
+### 小红书 `3:4`
 
-19 个新风格用同一个题目「重复三遍的事，交给 AI」生成，方便横向比较设计语言。
+**排版系统**
 
 <table>
 <tr>
-<td width="25%"><a href="example-image/tile-crossword.png"><img src="example-image/thumbs/tile-crossword.webp"></a><br><b>字格填字系统</b><br><code>tile-crossword</code></td>
-<td width="25%"><a href="example-image/giant-numeral.png"><img src="example-image/thumbs/giant-numeral.webp"></a><br><b>巨型数字</b><br><code>giant-numeral</code></td>
-<td width="25%"><a href="example-image/exhibition-poster.png"><img src="example-image/thumbs/exhibition-poster.webp"></a><br><b>艺术馆展览海报</b><br><code>exhibition-poster</code></td>
-<td width="25%"><a href="example-image/swiss-concert-poster.png"><img src="example-image/thumbs/swiss-concert-poster.webp"></a><br><b>瑞士音乐会海报</b><br><code>swiss-concert-poster</code></td>
+<td width="25%"><a href="example-image/tile-crossword.png"><img src="example-image/thumbs/tile-crossword.webp"></a><br><b>字格填字系统</b> <code>tile-crossword</code><br><sub>「一个人的设计工作室」</sub></td>
+<td width="25%"><a href="example-image/giant-numeral.png"><img src="example-image/thumbs/giant-numeral.webp"></a><br><b>巨型数字</b> <code>giant-numeral</code><br><sub>「自由职业第 365 天」</sub></td>
+<td width="25%"><a href="example-image/exhibition-poster.png"><img src="example-image/thumbs/exhibition-poster.webp"></a><br><b>艺术馆展览海报</b> <code>exhibition-poster</code><br><sub>「把 AI 当同事」</sub></td>
+<td width="25%"><a href="example-image/swiss-concert-poster.png"><img src="example-image/thumbs/swiss-concert-poster.webp"></a><br><b>瑞士音乐会海报</b> <code>swiss-concert-poster</code><br><sub>「节奏比努力重要」</sub></td>
 </tr>
 <tr>
-<td width="25%"><a href="example-image/swiss-punk-layers.png"><img src="example-image/thumbs/swiss-punk-layers.webp"></a><br><b>瑞士朋克层叠</b><br><code>swiss-punk-layers</code></td>
-<td width="25%"><a href="example-image/cloth-book-jacket.png"><img src="example-image/thumbs/cloth-book-jacket.webp"></a><br><b>精装书封</b><br><code>cloth-book-jacket</code></td>
-<td width="25%"><a href="example-image/archive-index-card.png"><img src="example-image/thumbs/archive-index-card.webp"></a><br><b>档案索引卡</b><br><code>archive-index-card</code></td>
-<td width="25%"><a href="example-image/apothecary-label.png"><img src="example-image/thumbs/apothecary-label.webp"></a><br><b>药剂师标签</b><br><code>apothecary-label</code></td>
-</tr>
-<tr>
-<td width="25%"><a href="example-image/thermal-receipt.png"><img src="example-image/thumbs/thermal-receipt.webp"></a><br><b>热敏小票</b><br><code>thermal-receipt</code></td>
-<td width="25%"><a href="example-image/blueprint-drawing.png"><img src="example-image/thumbs/blueprint-drawing.webp"></a><br><b>蓝图技术图纸</b><br><code>blueprint-drawing</code></td>
-<td width="25%"><a href="example-image/dot-matrix-spec.png"><img src="example-image/thumbs/dot-matrix-spec.webp"></a><br><b>点阵规格书</b><br><code>dot-matrix-spec</code></td>
-<td width="25%"><a href="example-image/jp-magazine-special.png"><img src="example-image/thumbs/jp-magazine-special.webp"></a><br><b>日本杂志特集</b><br><code>jp-magazine-special</code></td>
-</tr>
-<tr>
-<td width="25%"><a href="example-image/hara-emptiness.png"><img src="example-image/thumbs/hara-emptiness.webp"></a><br><b>原研哉留白</b><br><code>hara-emptiness</code></td>
-<td width="25%"><a href="example-image/ink-zen-modern.png"><img src="example-image/thumbs/ink-zen-modern.webp"></a><br><b>新中式水墨</b><br><code>ink-zen-modern</code></td>
-<td width="25%"><a href="example-image/tanaka-geometry.png"><img src="example-image/thumbs/tanaka-geometry.webp"></a><br><b>田中一光几何</b><br><code>tanaka-geometry</code></td>
-<td width="25%"><a href="example-image/concept-still-life.png"><img src="example-image/thumbs/concept-still-life.webp"></a><br><b>概念静物摄影</b><br><code>concept-still-life</code></td>
-</tr>
-<tr>
-<td width="25%"><a href="example-image/riso-two-ink.png"><img src="example-image/thumbs/riso-two-ink.webp"></a><br><b>Riso 双色印刷</b><br><code>riso-two-ink</code></td>
-<td width="25%"><a href="example-image/soft-clay-3d.png"><img src="example-image/thumbs/soft-clay-3d.webp"></a><br><b>软陶 3D</b><br><code>soft-clay-3d</code></td>
-<td width="25%"><a href="example-image/grainy-gradient.png"><img src="example-image/thumbs/grainy-gradient.webp"></a><br><b>颗粒渐变光晕</b><br><code>grainy-gradient</code></td>
+<td width="25%"><a href="example-image/swiss-punk-layers.png"><img src="example-image/thumbs/swiss-punk-layers.webp"></a><br><b>瑞士朋克层叠</b> <code>swiss-punk-layers</code><br><sub>「信息过载里的注意力」</sub></td>
+<td width="25%"><a href="example-image/swiss-grid-scrawl.png"><img src="example-image/thumbs/swiss-grid-scrawl.webp"></a><br><b>瑞士网格手写对撞</b> <code>swiss-grid-scrawl</code><br><sub>「计划赶不上变化」</sub></td>
+<td width="25%"><a href="example-image/bw-type-specimen.png"><img src="example-image/thumbs/bw-type-specimen.webp"></a><br><b>黑白字体样张</b> <code>bw-type-specimen</code><br><sub>「好标题的 7 条规则」</sub></td>
 <td></td>
 </tr>
 </table>
 
-### 早期风格（公众号 `2.35:1`）
+**印刷物件**
 
 <table>
 <tr>
-<td width="33%"><a href="example-image/anthropic-research-terracotta.png"><img src="example-image/thumbs/anthropic-research-terracotta.webp"></a><br><b>Anthropic Research 风格</b><br><code>anthropic-research</code></td>
-<td width="33%"><a href="example-image/T02-notion-doodle.png"><img src="example-image/thumbs/T02-notion-doodle.webp"></a><br><b>Notion 手绘信息图</b><br><code>notion-doodle</code></td>
-<td width="33%"><a href="example-image/T03-polish-grain-collage.png"><img src="example-image/thumbs/T03-polish-grain-collage.webp"></a><br><b>波兰颗粒剪贴海报</b><br><code>polish-grain-collage</code></td>
+<td width="25%"><a href="example-image/cloth-book-jacket.png"><img src="example-image/thumbs/cloth-book-jacket.webp"></a><br><b>精装书封</b> <code>cloth-book-jacket</code><br><sub>「慢慢变富的笨办法」</sub></td>
+<td width="25%"><a href="example-image/archive-index-card.png"><img src="example-image/thumbs/archive-index-card.webp"></a><br><b>档案索引卡</b> <code>archive-index-card</code><br><sub>「我的知识卡片系统」</sub></td>
+<td width="25%"><a href="example-image/apothecary-label.png"><img src="example-image/thumbs/apothecary-label.webp"></a><br><b>药剂师标签</b> <code>apothecary-label</code><br><sub>「治拖延的三味药」</sub></td>
+<td width="25%"><a href="example-image/thermal-receipt.png"><img src="example-image/thumbs/thermal-receipt.webp"></a><br><b>热敏小票</b> <code>thermal-receipt</code><br><sub>「订了 12 个 AI 工具，只用 2 个」</sub></td>
 </tr>
 <tr>
-<td width="33%"><a href="example-image/swiss-grid-scrawl.png"><img src="example-image/thumbs/swiss-grid-scrawl.webp"></a><br><b>瑞士网格手写对撞</b><br><code>swiss-grid-scrawl</code></td>
-<td width="33%"><a href="example-image/T05-cyber-industrial-panel.png"><img src="example-image/thumbs/T05-cyber-industrial-panel.webp"></a><br><b>赛博工业面板</b><br><code>cyber-industrial-panel</code></td>
-<td width="33%"><a href="example-image/T07-bw-type-specimen.png"><img src="example-image/thumbs/T07-bw-type-specimen.webp"></a><br><b>黑白字体样张</b><br><code>bw-type-specimen</code></td>
+<td width="25%"><a href="example-image/blueprint-drawing.png"><img src="example-image/thumbs/blueprint-drawing.webp"></a><br><b>蓝图技术图纸</b> <code>blueprint-drawing</code><br><sub>「搭一条自动化内容流水线」</sub></td>
+<td width="25%"><a href="example-image/dot-matrix-spec.png"><img src="example-image/thumbs/dot-matrix-spec.webp"></a><br><b>点阵规格书</b> <code>dot-matrix-spec</code><br><sub>「我的桌面工作站」</sub></td>
+<td width="25%"><a href="example-image/jp-magazine-special.png"><img src="example-image/thumbs/jp-magazine-special.webp"></a><br><b>日本杂志特集</b> <code>jp-magazine-special</code><br><sub>「数字游民的周末清单」</sub></td>
+<td></td>
+</tr>
+</table>
+
+**东方与留白**
+
+<table>
+<tr>
+<td width="25%"><a href="example-image/hara-emptiness.png"><img src="example-image/thumbs/hara-emptiness.webp"></a><br><b>原研哉留白</b> <code>hara-emptiness</code><br><sub>「桌上只剩一支笔」</sub></td>
+<td width="25%"><a href="example-image/ink-zen-modern.png"><img src="example-image/thumbs/ink-zen-modern.webp"></a><br><b>新中式水墨</b> <code>ink-zen-modern</code><br><sub>「慢下来才看得清」</sub></td>
+<td width="25%"><a href="example-image/tanaka-geometry.png"><img src="example-image/thumbs/tanaka-geometry.webp"></a><br><b>田中一光几何</b> <code>tanaka-geometry</code><br><sub>「一个工程师的转行笔记」</sub></td>
+<td></td>
+</tr>
+</table>
+
+**摄影与实物**
+
+<table>
+<tr>
+<td width="25%"><a href="example-image/concept-still-life.png"><img src="example-image/thumbs/concept-still-life.webp"></a><br><b>概念静物摄影</b> <code>concept-still-life</code><br><sub>「注意力是被偷走的」</sub></td>
+<td width="25%"><a href="example-image/cinematic-photo-editorial.png"><img src="example-image/thumbs/cinematic-photo-editorial.webp"></a><br><b>电影感摄影排版</b> <code>cinematic-photo-editorial</code><br><sub>「离开大厂的那个下午」</sub></td>
+<td width="25%"><a href="example-image/film-poster-icon.png"><img src="example-image/thumbs/film-poster-icon.webp"></a><br><b>概念物电影海报</b> <code>film-poster-icon</code><br><sub>「一个人就是一家公司」</sub></td>
+<td></td>
+</tr>
+</table>
+
+**插画与手作**
+
+<table>
+<tr>
+<td width="25%"><a href="example-image/riso-two-ink.png"><img src="example-image/thumbs/riso-two-ink.webp"></a><br><b>Riso 双色印刷</b> <code>riso-two-ink</code><br><sub>「每天写 300 字」</sub></td>
+<td width="25%"><a href="example-image/soft-clay-3d.png"><img src="example-image/thumbs/soft-clay-3d.webp"></a><br><b>软陶 3D</b> <code>soft-clay-3d</code><br><sub>「零基础搭一个 AI 助手」</sub></td>
+<td width="25%"><a href="example-image/anthropic-research.png"><img src="example-image/thumbs/anthropic-research.webp"></a><br><b>Anthropic Research 风格</b> <code>anthropic-research</code><br><sub>「AI 会不会取代设计师」</sub></td>
+<td width="25%"><a href="example-image/notion-doodle.png"><img src="example-image/thumbs/notion-doodle.webp"></a><br><b>Notion 手绘信息图</b> <code>notion-doodle</code><br><sub>「用 AI 写代码的 4 个步骤」</sub></td>
 </tr>
 <tr>
-<td width="33%"><a href="example-image/T08-torn-photo-collage.png"><img src="example-image/thumbs/T08-torn-photo-collage.webp"></a><br><b>撕纸摄影拼贴</b><br><code>torn-photo-collage</code></td>
-<td width="33%"><a href="example-image/retro-halftone-pop.png"><img src="example-image/thumbs/retro-halftone-pop.webp"></a><br><b>复古半调波普</b><br><code>retro-halftone-pop</code></td>
-<td width="33%"><a href="example-image/cinematic-photo-editorial.png"><img src="example-image/thumbs/cinematic-photo-editorial.webp"></a><br><b>电影感摄影排版</b><br><code>cinematic-photo-editorial</code></td>
+<td width="25%"><a href="example-image/polish-grain-collage.png"><img src="example-image/thumbs/polish-grain-collage.webp"></a><br><b>波兰颗粒剪贴海报</b> <code>polish-grain-collage</code><br><sub>「被算法推着走的人」</sub></td>
+<td width="25%"><a href="example-image/torn-photo-collage.png"><img src="example-image/thumbs/torn-photo-collage.webp"></a><br><b>撕纸摄影拼贴</b> <code>torn-photo-collage</code><br><sub>「我的年中复盘」</sub></td>
+<td width="25%"><a href="example-image/retro-halftone-pop.png"><img src="example-image/thumbs/retro-halftone-pop.webp"></a><br><b>复古半调波普</b> <code>retro-halftone-pop</code><br><sub>「周一综合症」</sub></td>
+<td></td>
 </tr>
+</table>
+
+**氛围**
+
+<table>
 <tr>
-<td width="33%"><a href="example-image/film-poster-icon.png"><img src="example-image/thumbs/film-poster-icon.webp"></a><br><b>概念物电影海报</b><br><code>film-poster-icon</code></td>
+<td width="25%"><a href="example-image/grainy-gradient.png"><img src="example-image/thumbs/grainy-gradient.webp"></a><br><b>颗粒渐变光晕</b> <code>grainy-gradient</code><br><sub>「十月月记」</sub></td>
+<td width="25%"><a href="example-image/cyber-industrial-panel.png"><img src="example-image/thumbs/cyber-industrial-panel.webp"></a><br><b>赛博工业面板</b> <code>cyber-industrial-panel</code><br><sub>「本地大模型跑分实测」</sub></td>
 <td></td>
 <td></td>
+</tr>
+</table>
+
+### 公众号 `3.35:1`
+
+公众号封面是一张图上框两次：2.35:1 给订阅号消息里的头条，1:1 给转发卡片和文章列表。所以横版和方版各画一张、再拼成一张 3.35:1 上传，在后台把 2.35:1 框拖到最左、1:1 框拖到最右，两个框都落在完整的设计上。
+
+<table>
+<tr>
+<td width="50%"><a href="example-image/wechat/giant-numeral.png"><img src="example-image/wechat/thumbs/giant-numeral.webp"></a><br><b>巨型数字</b> <code>giant-numeral</code><br><sub>「自由职业第 365 天」</sub></td>
+<td width="50%"><a href="example-image/wechat/blueprint-drawing.png"><img src="example-image/wechat/thumbs/blueprint-drawing.webp"></a><br><b>蓝图技术图纸</b> <code>blueprint-drawing</code><br><sub>「搭一条自动化内容流水线」</sub></td>
+</tr>
+<tr>
+<td width="50%"><a href="example-image/wechat/hara-emptiness.png"><img src="example-image/wechat/thumbs/hara-emptiness.webp"></a><br><b>原研哉留白</b> <code>hara-emptiness</code><br><sub>「桌上只剩一支笔」</sub></td>
+<td width="50%"><a href="example-image/wechat/concept-still-life.png"><img src="example-image/wechat/thumbs/concept-still-life.webp"></a><br><b>概念静物摄影</b> <code>concept-still-life</code><br><sub>「注意力是被偷走的」</sub></td>
+</tr>
+<tr>
+<td width="50%"><a href="example-image/wechat/notion-doodle.png"><img src="example-image/wechat/thumbs/notion-doodle.webp"></a><br><b>Notion 手绘信息图</b> <code>notion-doodle</code><br><sub>「用 AI 写代码的 4 个步骤」</sub></td>
+<td width="50%"><a href="example-image/wechat/grainy-gradient.png"><img src="example-image/wechat/thumbs/grainy-gradient.webp"></a><br><b>颗粒渐变光晕</b> <code>grainy-gradient</code><br><sub>「十月月记」</sub></td>
 </tr>
 </table>
 
@@ -194,7 +237,8 @@ xenho-cover/
 │   ├── META.md                 # 结构化锚点（色板、构图适配、微排版槽位、必守项、禁用项）
 │   └── STYLE.md                # 视觉语言的完整描述
 └── example-image/              # 各风格的实际产出示例（GPT Image 直出），命名 {style-id}.png
-    └── thumbs/                 # README 网格用的 WebP 缩略图，勿手改
+    ├── thumbs/                 # README 网格用的 WebP 缩略图，勿手改
+    └── wechat/                 # 公众号 3.35:1 拼合图（横版 + 方版），thumbs/ 同上
 ```
 
 设计上风格库与工作流分离：**加新风格只需要加一个 `styles/{id}/` 文件夹，不用改 `SKILL.md`**。

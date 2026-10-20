@@ -45,7 +45,7 @@ New-Item -ItemType Junction -Path $HOME/.claude/skills/xenho-cover -Target "<本
 1. 收集参考图放进 `refs/{new-id}/`；或先用同一题目批量出样图比较（2026-10 那轮在 `tmp/style-r1`、`tmp/style-r2`，经本机 Codex 生图，题目「重复三遍的事，交给 AI」）
 2. 新建 `styles/{new-id}/META.md` + `STYLE.md`（照 `tile-crossword` 的 schema，含 `micro_type` 微排版槽位）；样图里的具体物件是那道题的内容，写进风格原子前要去题材化
 3. 在 `references/style-catalog.md` 归进一个气质家族、加一行，并更新内容匹配和平台推荐
-4. 示例图放 `example-image/{new-id}.png`，生成 `example-image/thumbs/{new-id}.webp`（竖版宽 600px），README 网格加一格
+4. 示例图放 `example-image/{new-id}.png`，生成 `example-image/thumbs/{new-id}.webp`（竖版宽 600px），README 对应家族的网格加一格，配一个适合这个风格的题目（示例图不用同一个题目）
 
 ## 两条硬规则的来历
 
