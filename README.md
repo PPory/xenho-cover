@@ -2,7 +2,7 @@
 
 一个给 AI Agent 使用的封面生成 Skill。
 
-把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**完整的图像生成提示词**，也可以直接出图。风格来自自建风格库——13 个互不重叠的风格原子，从安静的研究报告到先锋剪贴海报，各自有明确的适用边界。
+把一篇文章、一个主题、一条小红书笔记或一篇公众号推文，变成一份**完整的图像生成提示词**，也可以直接出图。风格来自自建风格库——29 个风格原子分成 6 个气质家族，从原研哉式留白到艺术馆展览海报，各自有明确的适用边界。
 
 两种模式：
 
@@ -37,7 +37,7 @@ ln -s <克隆路径> ~/.claude/skills/xenho-cover
 
 | Skill | 用途 |
 | --- | --- |
-| `xenho-cover` | 把文章 / 主题编译成封面图像提示词，13 个风格原子任选其一 |
+| `xenho-cover` | 把文章 / 主题编译成封面图像提示词，29 个风格原子任选其一 |
 
 ## 用法
 
@@ -52,7 +52,7 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 ### 指定风格
 
 ```
-用 anthropic-research 风格给这篇文章配个公众号封面
+用 tile-crossword 风格给这篇文章配个公众号封面
 ```
 
 点名风格时跳过推荐环节，直接编译。
@@ -75,51 +75,102 @@ Skill 会提炼标题三层、视觉隐喻、情绪和禁用元素，推荐 3 �
 
 ## 风格库
 
-| 风格 | Style ID | 视觉语言 | 适用 |
+29 个风格分成 6 个气质家族，内容匹配与平台推荐见 [`references/style-catalog.md`](references/style-catalog.md)。
+
+| 家族 | 风格 | Style ID | 视觉语言 |
 | --- | --- | --- | --- |
-| Anthropic Research 风格 | `anthropic-research` | 纯色底 + 衬线大标题 + 有机色块承载的抽象隐喻线稿 | AI、技术、方法论、观点、研究类内容；抽象概念的隐喻转译 |
-| Notion 手绘信息图 | `notion-doodle` | 纸白底 + 马克笔黑白墨线 + 五种构图型的信息图 | 教程、步骤、干货清单、对比评测；松弛亲和、降低阅读门槛 |
-| 波兰颗粒剪贴海报 | `polish-grain-collage` | 炭黑底 + 逐字散落的标题 + 颗粒肌理形块 + 一块朱红 | 文化议题、冲突感观点、活动预告；视觉音量最大 |
-| 瑞士网格手写对撞 | `swiss-grid-scrawl` | 瑞士网格印刷品浮在满纸手迹上 + 高亮黄卡片 | 创作、写作、设计、思考过程；「秩序 vs 失控」的张力 |
-| 赛博工业面板 | `cyber-industrial-panel` | 纯黑装甲面板 45° 咬合 + 浅灰走线 + 放射刻度圆 | AI 工具、系统架构、工作流、硬核技术文；冷静的未来感 |
-| 商业杂志头版 | `business-magazine-front-page` | 高饱和撞色 + 锐利标题与商业隐喻融合 + 编辑栏 | 商业趋势、公司产品分析、投资创业；媒体权威感 |
-| 黑白字体样张 | `bw-type-specimen` | 纯黑白 + 弧线切分正负空间 + 巨型衬线字跨区反色 | 宣言、金句、概念提出、文字出版元话题；纯排版 |
-| 撕纸摄影拼贴 | `torn-photo-collage` | 黑白纪实摄影撕裂重拼 + 深红压场 + 牛皮纸层叠 | 情绪浓度高的叙事文、个人经历、反精致观点 |
-| 脏打字机样张 | `dirty-typewriter-specimen` | 炭黑粗纸 + 磨损粗衬线巨字 + 高对比黑白物件照 | 宣言、态度文、复古粗粝的暗色标题主导封面 |
-| 复古半调波普 | `retro-halftone-pop` | 动画线稿 + 粗 CMYK 半调网点 + 高饱和三色撞色 | 第一人称态度文、情绪话题；主体可以是人、物或一组东西 |
-| 荧光档案打字机 | `highlight-archive-type` | 冷灰纸底 + 打字机粗字 + 整行荧光绿高亮 + 半调物件 | 轻快干货、观点表态、文书档案感；库内最轻快的风格 |
-| 电影感摄影排版 | `cinematic-photo-editorial` | 满幅出血单色调实拍 + 巨字长在景深里 + 虚构徽章 | 氛围叙事、场景体验、大片感；题材由文章定，不限场景 |
-| 概念物电影海报 | `film-poster-icon` | 饱和实色底 + 巨型概念物剪影 + 微小人影的尺度对比 | 单一强意象、隆重文学感；「人在结构面前很小」这类母题 |
+| 排版系统 | 字格填字系统 | `tile-crossword` | 填字游戏式方格网，一字一格，单色调 + 四角档案小字 |
+| 排版系统 | 巨型数字 | `giant-numeral` | 出血裁切的巨型无衬线数字 + 一条信号红 + 中号标题 |
+| 排版系统 | 艺术馆展览海报 | `exhibition-poster` | 巨字撑满上半部 + 三栏信息 + 荧光贴纸圆 |
+| 排版系统 | 瑞士音乐会海报 | `swiss-concert-poster` | Müller-Brockmann 式几何节律，在一处发生变化 |
+| 排版系统 | 瑞士朋克层叠 | `swiss-punk-layers` | Weingart 式网屏叠印、莫尔纹、阶梯标题 |
+| 排版系统 | 瑞士网格手写对撞 | `swiss-grid-scrawl` | 瑞士网格印刷品浮在满纸手迹上 + 高亮黄卡片 |
+| 排版系统 | 黑白字体样张 | `bw-type-specimen` | 纯黑白 + 弧线切分正负空间 + 巨型衬线字跨区反色 |
+| 印刷物件 | 精装书封 | `cloth-book-jacket` | 细纹布面 + 烫金单线徽记 + 烫金宋体 |
+| 印刷物件 | 档案索引卡 | `archive-index-card` | 红蓝格线索引卡 + 打字机字段 + 红色橡皮章 |
+| 印刷物件 | 药剂师标签 | `apothecary-label` | 琥珀瓶身上的纸标签，居中对称的配方排版 |
+| 印刷物件 | 热敏小票 | `thermal-receipt` | 饱和色底上的热敏小票，把观点写成一笔账 |
+| 印刷物件 | 蓝图技术图纸 | `blueprint-drawing` | 普鲁士蓝晒图 + 白色工程线稿 + 图签栏 |
+| 印刷物件 | 点阵规格书 | `dot-matrix-spec` | TE 说明书式圆点像素巨字 + 标注 + 规格表 |
+| 印刷物件 | 日本杂志特集 | `jp-magazine-special` | 纯色底 + 自造刊名 + 去底物件照 + 层级丰富的小字 |
+| 东方与留白 | 原研哉留白 | `hara-emptiness` | 大片纸色留白 + 侧光静物 + 竖排细宋体，用缺席讲隐喻 |
+| 东方与留白 | 新中式水墨 | `ink-zen-modern` | 宣纸笔触 vs 精确朱红几何 + 竖排宋体 + 小方印 |
+| 东方与留白 | 田中一光几何 | `tanaka-geometry` | 几何色块在网格上拼出形象，五色平涂 |
+| 摄影与实物 | 概念静物摄影 | `concept-still-life` | 饱和背景纸 + 两物嫁接的超现实物件 + 硬光 |
+| 摄影与实物 | 电影感摄影排版 | `cinematic-photo-editorial` | 满幅出血单色调实拍 + 巨字长在景深里 + 虚构徽章 |
+| 摄影与实物 | 概念物电影海报 | `film-poster-icon` | 饱和实色底 + 巨型概念物剪影 + 微小人影的尺度对比 |
+| 插画与手作 | Riso 双色印刷 | `riso-two-ink` | 两色孔版叠印、颗粒与套色错位、稚拙手绘 |
+| 插画与手作 | 软陶 3D | `soft-clay-3d` | 糖果色哑光软陶小装置，柔光 |
+| 插画与手作 | Anthropic Research 风格 | `anthropic-research` | 纯色底 + 衬线大标题 + 有机色块承载的抽象隐喻线稿 |
+| 插画与手作 | Notion 手绘信息图 | `notion-doodle` | 纸白底 + 马克笔黑白墨线 + 五种构图型的信息图 |
+| 插画与手作 | 波兰颗粒剪贴海报 | `polish-grain-collage` | 炭黑底 + 逐字散落的标题 + 颗粒肌理形块 + 一块朱红 |
+| 插画与手作 | 撕纸摄影拼贴 | `torn-photo-collage` | 黑白纪实摄影撕裂重拼 + 深红压场 + 牛皮纸层叠 |
+| 插画与手作 | 复古半调波普 | `retro-halftone-pop` | 动画线稿 + 粗 CMYK 半调网点 + 高饱和三色撞色 |
+| 氛围 | 颗粒渐变光晕 | `grainy-gradient` | 柔焦色彩光球 + 胶片颗粒 + 干净大字 |
+| 氛围 | 赛博工业面板 | `cyber-industrial-panel` | 纯黑装甲面板 45° 咬合 + 浅灰走线 + 放射刻度圆 |
 
 ## 风格示例
 
-全部由本 Skill 产出的提示词经 GPT Image-2 直接生成，未做后期修改，比例为公众号头图 `2.35:1`。
-下方为缩略图，**点击可查看全尺寸原图**。
+全部由 GPT Image 系列直接生成，未做任何后期修改。下方为缩略图，**点击可查看全尺寸原图**。
+
+### 2026-10 新增（小红书 `3:4`）
+
+19 个新风格用同一个题目「重复三遍的事，交给 AI」生成，方便横向比较设计语言。
 
 <table>
 <tr>
-<td width="33%"><a href="example-image/anthropic-research-terracotta.png"><img src="example-image/thumbs/anthropic-research-terracotta.webp"></a><br><b>Anthropic Research · 陶土橙</b><br><code>anthropic-research</code></td>
-<td width="33%"><a href="example-image/anthropic-research-ink.png"><img src="example-image/thumbs/anthropic-research-ink.webp"></a><br><b>Anthropic Research · 深黑</b><br><code>anthropic-research</code></td>
+<td width="25%"><a href="example-image/tile-crossword.png"><img src="example-image/thumbs/tile-crossword.webp"></a><br><b>字格填字系统</b><br><code>tile-crossword</code></td>
+<td width="25%"><a href="example-image/giant-numeral.png"><img src="example-image/thumbs/giant-numeral.webp"></a><br><b>巨型数字</b><br><code>giant-numeral</code></td>
+<td width="25%"><a href="example-image/exhibition-poster.png"><img src="example-image/thumbs/exhibition-poster.webp"></a><br><b>艺术馆展览海报</b><br><code>exhibition-poster</code></td>
+<td width="25%"><a href="example-image/swiss-concert-poster.png"><img src="example-image/thumbs/swiss-concert-poster.webp"></a><br><b>瑞士音乐会海报</b><br><code>swiss-concert-poster</code></td>
+</tr>
+<tr>
+<td width="25%"><a href="example-image/swiss-punk-layers.png"><img src="example-image/thumbs/swiss-punk-layers.webp"></a><br><b>瑞士朋克层叠</b><br><code>swiss-punk-layers</code></td>
+<td width="25%"><a href="example-image/cloth-book-jacket.png"><img src="example-image/thumbs/cloth-book-jacket.webp"></a><br><b>精装书封</b><br><code>cloth-book-jacket</code></td>
+<td width="25%"><a href="example-image/archive-index-card.png"><img src="example-image/thumbs/archive-index-card.webp"></a><br><b>档案索引卡</b><br><code>archive-index-card</code></td>
+<td width="25%"><a href="example-image/apothecary-label.png"><img src="example-image/thumbs/apothecary-label.webp"></a><br><b>药剂师标签</b><br><code>apothecary-label</code></td>
+</tr>
+<tr>
+<td width="25%"><a href="example-image/thermal-receipt.png"><img src="example-image/thumbs/thermal-receipt.webp"></a><br><b>热敏小票</b><br><code>thermal-receipt</code></td>
+<td width="25%"><a href="example-image/blueprint-drawing.png"><img src="example-image/thumbs/blueprint-drawing.webp"></a><br><b>蓝图技术图纸</b><br><code>blueprint-drawing</code></td>
+<td width="25%"><a href="example-image/dot-matrix-spec.png"><img src="example-image/thumbs/dot-matrix-spec.webp"></a><br><b>点阵规格书</b><br><code>dot-matrix-spec</code></td>
+<td width="25%"><a href="example-image/jp-magazine-special.png"><img src="example-image/thumbs/jp-magazine-special.webp"></a><br><b>日本杂志特集</b><br><code>jp-magazine-special</code></td>
+</tr>
+<tr>
+<td width="25%"><a href="example-image/hara-emptiness.png"><img src="example-image/thumbs/hara-emptiness.webp"></a><br><b>原研哉留白</b><br><code>hara-emptiness</code></td>
+<td width="25%"><a href="example-image/ink-zen-modern.png"><img src="example-image/thumbs/ink-zen-modern.webp"></a><br><b>新中式水墨</b><br><code>ink-zen-modern</code></td>
+<td width="25%"><a href="example-image/tanaka-geometry.png"><img src="example-image/thumbs/tanaka-geometry.webp"></a><br><b>田中一光几何</b><br><code>tanaka-geometry</code></td>
+<td width="25%"><a href="example-image/concept-still-life.png"><img src="example-image/thumbs/concept-still-life.webp"></a><br><b>概念静物摄影</b><br><code>concept-still-life</code></td>
+</tr>
+<tr>
+<td width="25%"><a href="example-image/riso-two-ink.png"><img src="example-image/thumbs/riso-two-ink.webp"></a><br><b>Riso 双色印刷</b><br><code>riso-two-ink</code></td>
+<td width="25%"><a href="example-image/soft-clay-3d.png"><img src="example-image/thumbs/soft-clay-3d.webp"></a><br><b>软陶 3D</b><br><code>soft-clay-3d</code></td>
+<td width="25%"><a href="example-image/grainy-gradient.png"><img src="example-image/thumbs/grainy-gradient.webp"></a><br><b>颗粒渐变光晕</b><br><code>grainy-gradient</code></td>
+<td></td>
+</tr>
+</table>
+
+### 早期风格（公众号 `2.35:1`）
+
+<table>
+<tr>
+<td width="33%"><a href="example-image/anthropic-research-terracotta.png"><img src="example-image/thumbs/anthropic-research-terracotta.webp"></a><br><b>Anthropic Research 风格</b><br><code>anthropic-research</code></td>
 <td width="33%"><a href="example-image/T02-notion-doodle.png"><img src="example-image/thumbs/T02-notion-doodle.webp"></a><br><b>Notion 手绘信息图</b><br><code>notion-doodle</code></td>
+<td width="33%"><a href="example-image/T03-polish-grain-collage.png"><img src="example-image/thumbs/T03-polish-grain-collage.webp"></a><br><b>波兰颗粒剪贴海报</b><br><code>polish-grain-collage</code></td>
 </tr>
 <tr>
-<td><a href="example-image/T03-polish-grain-collage.png"><img src="example-image/thumbs/T03-polish-grain-collage.webp"></a><br><b>波兰颗粒剪贴海报</b><br><code>polish-grain-collage</code></td>
-<td><a href="example-image/swiss-grid-scrawl.png"><img src="example-image/thumbs/swiss-grid-scrawl.webp"></a><br><b>瑞士网格手写对撞</b><br><code>swiss-grid-scrawl</code></td>
-<td><a href="example-image/T05-cyber-industrial-panel.png"><img src="example-image/thumbs/T05-cyber-industrial-panel.webp"></a><br><b>赛博工业面板</b><br><code>cyber-industrial-panel</code></td>
+<td width="33%"><a href="example-image/swiss-grid-scrawl.png"><img src="example-image/thumbs/swiss-grid-scrawl.webp"></a><br><b>瑞士网格手写对撞</b><br><code>swiss-grid-scrawl</code></td>
+<td width="33%"><a href="example-image/T05-cyber-industrial-panel.png"><img src="example-image/thumbs/T05-cyber-industrial-panel.webp"></a><br><b>赛博工业面板</b><br><code>cyber-industrial-panel</code></td>
+<td width="33%"><a href="example-image/T07-bw-type-specimen.png"><img src="example-image/thumbs/T07-bw-type-specimen.webp"></a><br><b>黑白字体样张</b><br><code>bw-type-specimen</code></td>
 </tr>
 <tr>
-<td><a href="example-image/T06-business-magazine-front-page.png"><img src="example-image/thumbs/T06-business-magazine-front-page.webp"></a><br><b>商业杂志头版</b><br><code>business-magazine-front-page</code></td>
-<td><a href="example-image/T07-bw-type-specimen.png"><img src="example-image/thumbs/T07-bw-type-specimen.webp"></a><br><b>黑白字体样张</b><br><code>bw-type-specimen</code></td>
-<td><a href="example-image/T08-torn-photo-collage.png"><img src="example-image/thumbs/T08-torn-photo-collage.webp"></a><br><b>撕纸摄影拼贴</b><br><code>torn-photo-collage</code></td>
+<td width="33%"><a href="example-image/T08-torn-photo-collage.png"><img src="example-image/thumbs/T08-torn-photo-collage.webp"></a><br><b>撕纸摄影拼贴</b><br><code>torn-photo-collage</code></td>
+<td width="33%"><a href="example-image/retro-halftone-pop.png"><img src="example-image/thumbs/retro-halftone-pop.webp"></a><br><b>复古半调波普</b><br><code>retro-halftone-pop</code></td>
+<td width="33%"><a href="example-image/cinematic-photo-editorial.png"><img src="example-image/thumbs/cinematic-photo-editorial.webp"></a><br><b>电影感摄影排版</b><br><code>cinematic-photo-editorial</code></td>
 </tr>
 <tr>
-<td><a href="example-image/T09-dirty-typewriter-specimen.png"><img src="example-image/thumbs/T09-dirty-typewriter-specimen.webp"></a><br><b>脏打字机样张</b><br><code>dirty-typewriter-specimen</code></td>
-<td><a href="example-image/retro-halftone-pop.png"><img src="example-image/thumbs/retro-halftone-pop.webp"></a><br><b>复古半调波普</b><br><code>retro-halftone-pop</code></td>
-<td><a href="example-image/highlight-archive-type.png"><img src="example-image/thumbs/highlight-archive-type.webp"></a><br><b>荧光档案打字机</b><br><code>highlight-archive-type</code></td>
-</tr>
-<tr>
-<td><a href="example-image/cinematic-photo-editorial.png"><img src="example-image/thumbs/cinematic-photo-editorial.webp"></a><br><b>电影感摄影排版</b><br><code>cinematic-photo-editorial</code></td>
-<td><a href="example-image/film-poster-icon.png"><img src="example-image/thumbs/film-poster-icon.webp"></a><br><b>概念物电影海报</b><br><code>film-poster-icon</code></td>
+<td width="33%"><a href="example-image/film-poster-icon.png"><img src="example-image/thumbs/film-poster-icon.webp"></a><br><b>概念物电影海报</b><br><code>film-poster-icon</code></td>
+<td></td>
 <td></td>
 </tr>
 </table>
@@ -136,9 +187,9 @@ xenho-cover/
 ├── scripts/cover_generate.py   # Direct 模式唯一的出图入口（标准库）
 ├── tests/test_cover_generate.py    # 离线测试：本机假代理，不花额度
 ├── styles/{style-id}/
-│   ├── META.md                 # 结构化锚点（色板、构图适配、必守项、禁用项）
+│   ├── META.md                 # 结构化锚点（色板、构图适配、微排版槽位、必守项、禁用项）
 │   └── STYLE.md                # 视觉语言的完整描述
-└── example-image/              # 各风格的实际产出示例（GPT Image-2 直出）
+└── example-image/              # 各风格的实际产出示例（GPT Image 直出），命名 {style-id}.png
     └── thumbs/                 # README 网格用的 WebP 缩略图，勿手改
 ```
 
@@ -146,7 +197,7 @@ xenho-cover/
 
 ## 致谢
 
-风格原子的视觉语言分别取法于 Anthropic Research 的视觉报告、Notion 官方插画（Roman Muradov 一系）、波兰海报学派、瑞士平面设计范式、NKH Studio 的工业平面语言、Scott Clum / Ray Gun 的编辑拼贴，以及华语与国际艺术电影海报。本项目只借鉴视觉语言，不使用任何原作方的名称、标识或商标——所有风格原子的禁用清单里都明确写了这一条。
+风格原子的视觉语言分别取法于 Anthropic Research 的视觉报告、Notion 官方插画（Roman Muradov 一系）、波兰海报学派、瑞士平面设计范式、NKH Studio 的工业平面语言、Scott Clum / Ray Gun 的编辑拼贴，华语与国际艺术电影海报，以及原研哉 / 无印良品、田中一光、Josef Müller-Brockmann、Wolfgang Weingart、Experimental Jetset、Teenage Engineering、Stripe Press、Le Labo / Aesop 包装、日本生活方式杂志编辑设计和 Risograph 独立出版。本项目只借鉴视觉语言，不使用任何原作方的名称、标识或商标——所有风格原子的禁用清单里都明确写了这一条。
 
 ## License
 

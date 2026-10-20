@@ -10,3 +10,6 @@ desktop.ini
 
 # Python
 __pycache__/
+
+# 临时实验（风格探索样图等）
+tmp/

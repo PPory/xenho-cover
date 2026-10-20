@@ -42,10 +42,15 @@ New-Item -ItemType Junction -Path $HOME/.claude/skills/xenho-cover -Target "<本
 
 ## 加新风格的流程
 
-1. 收集参考图放进 `refs/`
-2. 新建 `styles/{new-id}/META.md` + `STYLE.md`（照 `anthropic-research` 的 schema）
-3. 在 `references/style-catalog.md` 加一行
-4. 风格 ≥ 3 个后，把 SKILL.md 门控从「单风格直用」改为「推荐 3 选 1」
+1. 收集参考图放进 `refs/{new-id}/`；或先用同一题目批量出样图比较（2026-10 那轮在 `tmp/style-r1`、`tmp/style-r2`，经本机 Codex 生图，题目「重复三遍的事，交给 AI」）
+2. 新建 `styles/{new-id}/META.md` + `STYLE.md`（照 `tile-crossword` 的 schema，含 `micro_type` 微排版槽位）；样图里的具体物件是那道题的内容，写进风格原子前要去题材化
+3. 在 `references/style-catalog.md` 归进一个气质家族、加一行，并更新内容匹配和平台推荐
+4. 示例图放 `example-image/{new-id}.png`，生成 `example-image/thumbs/{new-id}.webp`（竖版宽 600px），README 网格加一格
+
+## 两条硬规则的来历
+
+- **微排版不算「多字」**（blueprint 的文字预算）：2026-10 的风格探索发现，高级设计感很大部分来自期号、编号、条形码、竖排小字这层微排版；旧的「文字越少越好」把它一起砍掉了。内容文字上限不变，微排版按风格的 `micro_type` 槽位走。
+- **汉字安全**：同一轮里，汉字压在网点上、被贴纸盖住、用热敏 / 点阵字体、被压扁撑满版面，这四种情况都写错了字。写新风格时，特殊字体只给西文和数字。
 
 ## 验证
 
