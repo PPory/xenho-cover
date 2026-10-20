@@ -11,10 +11,8 @@ required_fields: [主题词, 画幅比例, 语言, 用途]
 optional_fields: [副标题, 核心表达, 补充背景, 情绪倾向, 不想出现的元素]
 source: styles/tile-crossword/STYLE.md
 color_schemes:
-  - {id: A, name: 薰衣草靛, paper: "#E9E6F7", line: "#5A4FCF", fill: "#1B1464", vignette: "#8C84E8", default: true}
-  - {id: B, name: 薄荷墨绿, paper: "#E4F1EA", line: "#2F8F68", fill: "#0F3D2E", vignette: "#7CC4A4"}
-  - {id: C, name: 杏橙赭, paper: "#F6ECDF", line: "#D2692A", fill: "#5A2410", vignette: "#F0A774"}
-  - {id: D, name: 冷灰黑, paper: "#ECECEA", line: "#555555", fill: "#141414", vignette: "#A8A8A4"}
+  - {id: A, name: 薰衣草靛, paper: "#E9E6F7", line: "#5A4FCF", fill: "#1B1464", micro_text: "#3B2FC9", vignette: "#8C84E8", default: true}
+color_lock: 只用这一套配色，不换色——用户明确要求固定原始的蓝紫色（2026-10-21，换成薄荷绿的版本被否）
 style_anchors:
   - 「Design Through System & Play」：严格的同尺寸方格网，像填字游戏一样横竖拼成一块不规则形状——系统 + 玩心
   - 主标题每个字（每个西文字母）单独占一格，被深色实心填满、字为白色粗体无衬线；标题沿格子横向、纵向转折排布
@@ -42,7 +40,7 @@ avoid_when_applying_to_cover:
   - 把两个汉字挤进一格，或一个汉字跨两格
   - 写有标题字的方格被旋转（只旋转空格或微排版格）
   - 方格大小不一、变成随意拼贴
-  - 色系超过一个，或加入插画、照片、图标
+  - 换成蓝紫以外的任何色系，或加入插画、照片、图标
   - 微排版写成解释性句子
 ```
 
