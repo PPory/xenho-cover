@@ -1,10 +1,10 @@
 # xenho-cover
 
-Claude Code skill：把文章 / 主题变成封面图像提示词（Prompt 模式），或经 CPA 直接出图（Direct 模式），给辛禾自己发小红书、公众号、X、视频号、YouTube 时配封面用。
+Claude Code skill：把文章 / 主题变成封面图像提示词（Prompt 模式），或经 OpenAI 兼容的图像接口直接出图（Direct 模式），给辛禾自己发小红书、公众号、X、视频号、YouTube 时配封面用。
 
 ## 目标
 
-- 输入一篇文章或一个主题，产出一份完整图像生成提示词；Direct 模式再经 CPA 出图（默认 `gemini-3.1-flash-image`），每个画幅最多出一次图
+- 输入一篇文章或一个主题，产出一份完整图像生成提示词；Direct 模式再经图像接口出图（默认 `gpt-image-2`），每个画幅最多出一次图
 - 风格库与工作流分离：加新风格只加 `styles/{id}/` 文件夹，不改 SKILL.md
 - 最终提示词必须是「编译融合」的产物，不是「封面指令 + 风格原文」两段拼接
 

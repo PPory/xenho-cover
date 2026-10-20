@@ -1,8 +1,8 @@
-# Direct 模式：经 CPA 直接出图（Single-shot）
+# Direct 模式：经图像接口直接出图（Single-shot）
 
 Direct 模式必须先按 Prompt 模式完整编译出最终提示词，再调用图片接口。本文件只管出图这一层，不改风格和提示词编译规则。
 
-图片接口走 CPA（CLIProxyAPI，OpenAI 兼容代理），不用 Grsai。
+图片接口是任意 OpenAI 兼容的图像接口（官方接口、中转或代理都行），默认模型 `gpt-image-2`。不用 Grsai。
 
 ## 最高优先级：每个画幅最多出一次图
 
@@ -43,24 +43,26 @@ Direct 模式必须先按 Prompt 模式完整编译出最终提示词，再调�
 
 | 模型 | 端点 | 比例怎么传 | 图在哪 |
 | --- | --- | --- | --- |
-| `gemini-3.1-flash-image`（默认） | `{base}/chat/completions` | 顶层 `image_config: {aspect_ratio, image_size}` | `choices[0].message.images[].image_url.url`（data URL） |
-| `gpt-image-*` | `{base}/images/generations` | `size`：横 `1536x1024`、竖 `1024x1536`、方 `1024x1024` | `data[0].b64_json` 或 `data[0].url` |
+| `gpt-image-2`（默认，其他 `gpt-image-*` 同） | `{base}/images/generations` | `size`：按设计比例算出的精确尺寸（见下表），并带 `background: "opaque"` | `data[0].b64_json` 或 `data[0].url` |
+| `gemini-3.1-flash-image`（备选，`--model` 指定） | `{base}/chat/completions` | 顶层 `image_config: {aspect_ratio, image_size}` | `choices[0].message.images[].image_url.url`（data URL） |
 
-- **`gpt-image-*` 目前用不了**：CPA 给这类模型挑账号时会跳过 Free 计划的 codex 账号（`isFreeCodexAuth`），只有 Free 账号时永远返回 `auth_not_found`。接入付费 ChatGPT 账号之前用 gemini。
-- **请求必须带 User-Agent**：CPA 前面有 Cloudflare，urllib 默认的 UA 会被以 1010 拦下。
-- **默认不传 `image_size`（接口默认 1K）**：2026-10-02 实测 2K 的 3:4 要 135 秒，CPA 前面的 Cloudflare 100 秒就断开（HTTP 524），图可能已经出了、额度也花了却收不到。1K 约 25–65 秒。`--image-size 2K` 只在直连、不经 Cloudflare 时用。
+- **`background: "opaque"` 必须带**：不带时，物件摄影类画面（小票、瓶子、便利贴）会被当成去底产品图，输出透明底 PNG，底色整张丢失（2026-10 实测）。
+- **有的代理挑账号时会跳过免费账号**：只有免费账号时，gpt-image 永远返回 `auth_not_found`。这不是配置坏了，接入付费账号，或者先用 `--model gemini-3.1-flash-image`。
+- **请求必须带 User-Agent**：接口前面有 Cloudflare 时，urllib 默认的 UA 会被以 1010 拦下。脚本已经带上。
+- **经 Cloudflare 的请求超过 100 秒会断开**（HTTP 524），图可能已经出了、额度也花了却收不到。gemini 默认不传 `image_size`（接口默认 1K，约 25–65 秒；2026-10-02 实测 2K 的 3:4 要 135 秒）。`--image-size 2K` 只在不经 Cloudflare 时用。
 
 ## 比例
 
-| 平台 | 设计比例 | gemini 收到的比例 | 交付 |
-| --- | --- | --- | --- |
-| 公众号 · 横版 | 2.35:1 | 21:9 | 原图即可（实测 1584×672 = 2.357） |
-| 公众号 · 方版 | 1:1 | 1:1 | 原图；和横版一起用 `wechat_combine.py` 拼成 3.35:1 |
-| X | 5:2 | 21:9 | 居中裁到 5:2 |
-| 小红书 / 视频号 | 3:4 | 3:4 | 原图 |
-| YouTube | 16:9 | 16:9 | 原图 |
+| 平台 | 设计比例 | gpt-image 尺寸 | gemini 比例 | 交付 |
+| --- | --- | --- | --- | --- |
+| 公众号 · 横版 | 2.35:1 | 1920×816 | 21:9（1584×672） | 原图 |
+| 公众号 · 方版 | 1:1 | 1536×1536 | 1:1 | 原图；和横版一起用 `wechat_combine.py` 拼成 3.35:1 |
+| X | 5:2 | 2560×1024 | 21:9 | gpt-image 原图；gemini 居中裁到 5:2 |
+| 小红书 / 视频号 | 3:4 | 1536×2048 | 3:4 | 原图 |
+| YouTube | 16:9 | 2048×1152 | 16:9 | 原图 |
 
-- 其他比例只能用 gemini 支持的：`1:1 2:3 3:2 3:4 4:3 4:5 5:4 9:16 16:9 21:9 1:4 4:1 1:8 8:1`。
+- gpt-image 的其他比例：长边 2048、两边取 16 的倍数；长短边之比超过 3:1 的画不了，脚本直接拒绝。
+- gemini 只认这些比例：`1:1 2:3 3:2 3:4 4:3 4:5 5:4 9:16 16:9 21:9 1:4 4:1 1:8 8:1`。
 - 本机装了 Pillow 时，脚本自动居中裁出一份 `-cropped`；没装就在结果里给出 `crop_note`。
 - 提示词里写的始终是**设计比例**，构图按它安排。
 - `--ratio 3.35:1` 会被脚本直接拒绝（不发请求）：它是公众号的上传拼合图，不是生成比例。

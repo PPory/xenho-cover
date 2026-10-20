@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Single-shot cover image client for an OpenAI-compatible proxy (CLIProxyAPI),
+"""Single-shot cover image client for an OpenAI-compatible image API (relay or proxy),
 with duplicate-request protection.
 
 The guarantee is conservative: one invocation creates at most one image request.
@@ -8,11 +8,11 @@ POSTing again. If a previous request may have been sent but no final response wa
 recorded, the script refuses to retry automatically.
 
 Two protocols, picked by model name:
-- gemini-*-image (default gemini-3.1-flash-image): POST {base}/chat/completions with a
-  top-level image_config.aspect_ratio; the image comes back as a data URL in
-  choices[0].message.images[].image_url.url.
-- gpt-image-*: POST {base}/images/generations; the image comes back as data[0].b64_json
-  or data[0].url. (CLIProxyAPI skips Free-plan codex accounts for these models.)
+- gpt-image-* (default gpt-image-2): POST {base}/images/generations with a custom size
+  computed from the design ratio and an opaque background; the image comes back as
+  data[0].b64_json or data[0].url. (Some proxies skip free-plan accounts for these models.)
+- gemini-*-image: POST {base}/chat/completions with a top-level image_config.aspect_ratio;
+  the image comes back as a data URL in choices[0].message.images[].image_url.url.
 
 Standard library only (Pillow is used for the final crop when it happens to be
 installed). Secrets come from XENHO_COVER_API_KEY or an --env-file and are never printed.
@@ -35,7 +35,7 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
 
-DEFAULT_MODEL = "gemini-3.1-flash-image"
+DEFAULT_MODEL = "gpt-image-2"
 DEFAULT_JOBS_DIR = Path.home() / ".xenho-cover" / "jobs"
 DEFAULT_OUT_DIR = Path.home() / ".claude" / "data" / "xenho-cover"
 USER_AGENT = "xenho-cover/3.0-single-shot"
@@ -43,6 +43,10 @@ USER_AGENT = "xenho-cover/3.0-single-shot"
 # 1584x672 (2.357), which is the WeChat 2.35:1 cover as is; X 5:2 is center-cropped.
 PLATFORM_RATIO_ALIASES = {"2.35:1": "21:9", "5:2": "21:9"}
 GEMINI_RATIOS = {"1:1", "2:3", "3:2", "3:4", "4:3", "4:5", "5:4", "9:16", "16:9", "21:9", "1:4", "4:1", "1:8", "8:1"}
+# gpt-image takes any size whose edges are multiples of 16, long:short <= 3, and 0.65M-8.3M pixels.
+# Platform ratios get hand-picked sizes that hit the ratio exactly; anything else gets a 2048 long edge.
+GPT_IMAGE_SIZES = {"2.35:1": "1920x816", "5:2": "2560x1024", "3:4": "1536x2048", "16:9": "2048x1152", "1:1": "1536x1536"}
+GPT_IMAGE_MAX_RATIO = 3.0
 
 
 def utc_now() -> str:
@@ -115,16 +119,26 @@ def ratio_value(ratio: str) -> float:
     return w / h
 
 
+def gpt_image_size(ratio: str) -> str:
+    if ratio in GPT_IMAGE_SIZES:
+        return GPT_IMAGE_SIZES[ratio]
+    value = ratio_value(ratio)
+    if max(value, 1 / value) > GPT_IMAGE_MAX_RATIO:
+        raise RuntimeError(f"gpt-image cannot draw {ratio}: the long edge may be at most 3x the short edge")
+    snap = lambda x: max(16, round(x / 16) * 16)  # noqa: E731
+    width, height = (2048, snap(2048 / value)) if value >= 1 else (snap(2048 * value), 2048)
+    return f"{width}x{height}"
+
+
 def api_ratio_for(requested: str, model: str) -> str:
     requested = requested.strip()
     if not re.fullmatch(r"\d+(\.\d+)?:\d+(\.\d+)?", requested):
         raise RuntimeError(f"Ratio must look like 3:4 or 2.35:1, got {requested!r}")
-    if is_gpt_image(model):
-        value = ratio_value(requested)
-        return "1536x1024" if value > 1.1 else "1024x1536" if value < 0.9 else "1024x1024"
-    api_ratio = PLATFORM_RATIO_ALIASES.get(requested, requested)
     if requested == "3.35:1":
         raise RuntimeError("3.35:1 is the WeChat combined upload, not a generation ratio: generate 2.35:1 and 1:1 separately, then join them with scripts/wechat_combine.py")
+    if is_gpt_image(model):
+        return gpt_image_size(requested)
+    api_ratio = PLATFORM_RATIO_ALIASES.get(requested, requested)
     if api_ratio not in GEMINI_RATIOS:
         raise RuntimeError(f"Unsupported ratio {requested}. Use one of: {', '.join(sorted(GEMINI_RATIOS))} (2.35:1 and 5:2 map to 21:9)")
     return api_ratio
@@ -132,7 +146,8 @@ def api_ratio_for(requested: str, model: str) -> str:
 
 def build_request(base: str, model: str, prompt: str, api_ratio: str, image_size: str) -> tuple[str, dict[str, Any]]:
     if is_gpt_image(model):
-        return f"{base}/images/generations", {"model": model, "prompt": prompt, "n": 1, "size": api_ratio}
+        # opaque: object shots otherwise come back as transparent cut-outs with the background colour gone
+        return f"{base}/images/generations", {"model": model, "prompt": prompt, "n": 1, "size": api_ratio, "background": "opaque"}
     config: dict[str, Any] = {"aspect_ratio": api_ratio}
     if image_size:
         config["image_size"] = image_size
@@ -219,7 +234,7 @@ def parse_iso(value: str | None) -> float | None:
 
 
 def main() -> int:
-    parser = argparse.ArgumentParser(description="Single-shot cover image client (CLIProxyAPI)")
+    parser = argparse.ArgumentParser(description="Single-shot cover image client (OpenAI-compatible image API)")
     prompt_group = parser.add_mutually_exclusive_group(required=True)
     prompt_group.add_argument("--prompt", help="Final compiled image prompt")
     prompt_group.add_argument("--prompt-file", help="UTF-8 file containing the final prompt")
@@ -363,8 +378,8 @@ def main() -> int:
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_bytes(data)
             cropped = center_crop(out, args.ratio)
-            # 21:9 already is the 2.35:1 cover; anything else that came back in another shape needs a crop
-            needs_crop = args.ratio not in {api_ratio, "2.35:1"}
+            # gpt-image sizes hit the design ratio; gemini's 21:9 already is the 2.35:1 cover; anything else needs a crop
+            needs_crop = not is_gpt_image(model) and args.ratio not in {api_ratio, "2.35:1"}
             return finish({"ok": True, "category": "success", "status": "succeeded", "image_path": str(out),
                            "cropped_path": str(cropped) if cropped else None, "bytes": len(data),
                            "crop_note": f"Generated at {api_ratio}; center-crop to {args.ratio} before uploading" if needs_crop and not cropped else None},

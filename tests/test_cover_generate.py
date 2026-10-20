@@ -60,13 +60,13 @@ base = f"http://127.0.0.1:{server.server_port}/v1"
 with tempfile.TemporaryDirectory() as tmp:
     # dry run: no network, no state
     code, out = run(tmp, "--dry-run")
-    assert code == 0 and out["dry_run"] and out["api_ratio"] == "3:4" and not calls and not (Path(tmp) / "jobs").exists(), out
+    assert code == 0 and out["dry_run"] and out["api_ratio"] == "1536x2048" and not calls and not (Path(tmp) / "jobs").exists(), out
 
-    # first run: one request, gemini shape, UA set, image saved
+    # first run: one request, gpt-image by default, exact 3:4 size, opaque background, UA set, image saved
     code, out = run(tmp)
-    assert code == 0 and out["ok"] and not out["reused"], out
-    assert len(calls) == 1 and calls[0]["path"] == "/v1/chat/completions", calls
-    assert calls[0]["body"]["image_config"] == {"aspect_ratio": "3:4"}, calls[0]
+    assert code == 0 and out["ok"] and not out["reused"] and not out["crop_note"], out
+    assert len(calls) == 1 and calls[0]["path"] == "/v1/images/generations", calls
+    assert calls[0]["body"]["model"] == "gpt-image-2" and calls[0]["body"]["size"] == "1536x2048" and calls[0]["body"]["background"] == "opaque", calls[0]
     assert calls[0]["ua"].startswith("xenho-cover/"), calls[0]
     assert Path(out["image_path"]).read_bytes() == PNG
 
@@ -89,15 +89,23 @@ with tempfile.TemporaryDirectory() as tmp:
     mode["value"] = "ok"
 
 with tempfile.TemporaryDirectory() as tmp:
-    # gpt-image path and size by orientation
-    code, out = run(tmp, env_extra={"XENHO_COVER_MODEL": "gpt-image-2.5-flare"})
-    assert code == 0 and calls[-1]["path"] == "/v1/images/generations" and calls[-1]["body"]["size"] == "1024x1536", calls[-1]
+    # gemini is still available by name: chat/completions with image_config
+    code, out = run(tmp, env_extra={"XENHO_COVER_MODEL": "gemini-3.1-flash-image"})
+    assert code == 0 and calls[-1]["path"] == "/v1/chat/completions" and calls[-1]["body"]["image_config"] == {"aspect_ratio": "3:4"}, calls[-1]
 
 with tempfile.TemporaryDirectory() as tmp:
+    def dry(ratio, model=None):
+        extra = ["--model", model] if model else []
+        proc = subprocess.run([sys.executable, "-X", "utf8", str(SCRIPT), "--prompt", "x", "--ratio", ratio, "--dry-run", "--base-url", base, *extra],
+                              capture_output=True, text=True, env={**os.environ, "XENHO_COVER_API_KEY": "k"})
+        return json.loads(proc.stdout)
+
+    # gpt-image sizes hit each platform ratio; other ratios get a 2048 long edge; wider than 3:1 is refused
+    for ratio, size in {"2.35:1": "1920x816", "5:2": "2560x1024", "16:9": "2048x1152", "1:1": "1536x1536", "9:16": "1152x2048"}.items():
+        assert dry(ratio)["api_ratio"] == size, (ratio, dry(ratio))
+    assert not dry("3.5:1")["ok"] and not dry("3.35:1")["ok"]
     # 5:2 maps to 21:9 for gemini
-    proc = subprocess.run([sys.executable, "-X", "utf8", str(SCRIPT), "--prompt", "x", "--ratio", "5:2", "--dry-run", "--base-url", base],
-                          capture_output=True, text=True, env={**os.environ, "XENHO_COVER_API_KEY": "k"})
-    assert json.loads(proc.stdout)["api_ratio"] == "21:9", proc.stdout
+    assert dry("5:2", "gemini-3.1-flash-image")["api_ratio"] == "21:9"
 
 server.shutdown()
 print("cover_generate: ok")
